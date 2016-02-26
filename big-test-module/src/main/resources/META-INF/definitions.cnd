@@ -1,0 +1,26 @@
+<acme = 'http://acme.com/acme'>
+<acmemix = 'http://acme.com/acmemix'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+
+[acmemix:content] > jmix:droppableContent mixin
+
+[acme:container] > jnt:content, acmemix:content, mix:title
+	+*(acmemix:content) = acmemix:content
+	+*(acme:voyage) = acme:voyage
+
+[acme:chat] > jnt:content, acmemix:content, mix:title
+	- text (string, richtext)
+
+[acme:voyage] > jnt:content, mix:title
+	- text (string, richtext)
+	- countries (string, choicelist[country,flag]) multiple
+	- tripType (string, choicelist[resourceBundle]) < plane, train, bus
+
+[jnt:siteSettingsTest] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent
+
+[acmemix:siteOptions] mixin 
+ extends = jnt:virtualsite
+ itemtype = options
+ - favicon (weakreference, picker[type='file'])
