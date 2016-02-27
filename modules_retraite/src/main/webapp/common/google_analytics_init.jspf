@@ -1,0 +1,44 @@
+<%--
+	@author : el-aarko
+	@created : 8 nov. 2012
+	@Id : idDeLaPage
+	@description : queFaitLaJsp
+
+ --%>
+
+<%@include file="declarations.jspf"%>
+<%-- <template:addResources type="javascript" resources="//www.youtube.com/iframe_api"/> --%>
+<%-- <template:addResources type="javascript" resources="analytics/ga-youtube.js"/> --%>
+
+<c:if test="${connected }">
+	<jcr:node var="currentUserNode" uuid="${currentUser.identifier}" />
+	<c:set var="userNode" value="${currentUserNode}" />
+	<%@ include file="ciSetUserInfo.jspf"%>
+	<c:set var="gaUserType" value="${functions:escapeJavaScript(userTypeLabel)}" />
+	<c:if test="${cia:isProfessional(userNode)}">
+		<c:set var="gaUserType" value="Professionnel" />
+	</c:if>
+	<c:if test="${cia:isModerator(renderContext,currentUser)}">
+		<c:set var="gaUserType" value="Mod\u00E9rateur" />
+	</c:if>
+	<c:set var="userInfos">Connect\u00E9 - ${gaUserType}</c:set>
+</c:if>
+
+<c:if test="${not connected }">
+	<c:set var="userInfos">Non connect\u00E9</c:set>
+</c:if>
+
+<c:set var="gaAccountSiteID" value="${renderContext.site.properties['gaAccountID']}" />
+<c:set var="gaAccountID" value="${functions:default(gaAccountSiteID.string, 'UA-29661433-18')}" />
+<c:set var="isGaDevSite" value="${renderContext.site.properties['isGaDev']}" />
+<c:set var="isGaDev" value="${functions:default(isGaDevSite.string, false)}" />
+<c:set var="gaTimeout" value="${renderContext.site.properties['gaTimeout'].string}" />
+
+<c:url var="_gaqUrl" value="${renderContext.mainResource.node.url}">
+	<c:if test="${not empty param['src_terms[0].term']}">
+		<c:param name="s">${fn:escapeXml(param['src_terms[0].term'])}</c:param>
+	</c:if>
+	<c:if test="${not empty param['filterType']}">
+		<c:param name="filterType">${param['filterType'] eq 'jnt:ciArticle' ? 'Articles' : 'Questions'}</c:param>
+	</c:if>
+</c:url>

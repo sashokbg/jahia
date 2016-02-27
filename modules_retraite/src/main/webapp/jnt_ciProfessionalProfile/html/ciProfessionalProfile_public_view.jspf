@@ -1,0 +1,70 @@
+<%--
+	@author : pichards
+	@created : 12 sept. 2012
+	@Id : US403
+	@description : Affichage du profil d'un professionnel (vue publique)
+
+ --%>
+
+<%@include file="../../common/declarations.jspf"%>
+<%@include file="ga.jspf"%>
+
+<jcr:node var="userNode" uuid="${displayedUser.identifier}" />
+<%@include file="../../common/ciSetUserInfo.jspf"%>
+
+<div id="userProfil" class="statutPro">
+	<div id="userIdentity" class="dataSection entityFrame">
+		<div id="userPreview">
+			<div class="conteneurAvatar" id="userAvatar">
+				<img alt="Photo Avatar" height="70px" width="70px"
+					src="${avatarSrc70}" />
+			</div>
+			<div id="userInfoShort">
+				<span class="userInfoLine pseudo">${firstname}&nbsp;${lastname}</span>
+				<span class="userInfoLine fonction">${function}</span> <span
+					class="userInfoLine"> <c:choose>
+						<c:when test="${nbOfReplies == 0}">Aucune r&eacute;ponse sur le site</c:when>
+						<c:when test="${nbOfReplies == 1}">1 r&eacute;ponse sur le site</c:when>
+						<c:otherwise>${nbOfReplies} r&eacute;ponses sur le site</c:otherwise>
+					</c:choose>
+				</span>
+			</div>
+		</div>
+		<div class="breaker">
+			<!-- ne pas enlever -->
+		</div>
+	</div>
+	
+	<div id="userBio" class="dataSection">
+		<p>${empty biography ? 'Biographie non renseign&eacute;e' :	biography}</p>
+	</div> 
+	
+	<div id="userThematic" class="dataSection last">
+		<span class="userInfoLine titreSection"><fmt:message
+				key="professional.expert.domain${empty selectedThematics or functions:countOccurences(selectedThematics, ',') > 0 ? 's':''}" /></span>
+		<c:choose>
+			<c:when test="${not empty selectedThematics}">
+				<span class="userInfoLine"> <c:set var="firstItemPassed"
+						value="${false}" /> <c:forTokens items="${selectedThematics}"
+						delims="," var="item" varStatus="status">
+						<jcr:node var="itemNode" uuid="${item}" />
+						<c:if test="${not empty itemNode}">
+							<c:if test="${not status.first && firstItemPassed}">&nbsp;|&nbsp;</c:if>
+							<c:set var="nodeTitle"
+								value="${itemNode.properties['jcr:title'].string}" />
+							<a href="${itemNode.url}" title="${nodeTitle}">${nodeTitle}</a>
+							<c:set var="firstItemPassed" value="${true}" />
+						</c:if>
+					</c:forTokens>
+				</span>
+			</c:when>
+			<c:otherwise>
+				Non renseign&eacute;
+			</c:otherwise>
+		</c:choose>
+		<div class="clear"></div>
+	</div>
+</div>
+
+<%-- les reponses --%>
+<%@include file="ciProfessionalProfile_replies.jspf"%>

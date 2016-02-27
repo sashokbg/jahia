@@ -1,0 +1,20 @@
+<%--
+	@author : lakreb
+	@created : 22 aout 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+
+<%-- Google Analytics Callbacks  --%>
+<%@include file="../../common/declarations.jspf"%>
+
+<template:addResources>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('.articleLesPlusVus .titreArticle').click(function(){
+					trackEvent(['Articles du theme','${functions:escapeJavaScript(cia:getRubricParent(currentNode).displayableName)}',document.title]);
+				});
+			});
+		</script>
+</template:addResources>

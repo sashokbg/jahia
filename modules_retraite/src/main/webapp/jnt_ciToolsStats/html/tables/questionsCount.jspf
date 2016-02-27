@@ -1,0 +1,53 @@
+<%--
+	@author : foo
+	@created : 25 janv. 2013
+	@Id : idDeLaPage
+	@description : affiche le tableau des chiffres cles
+
+ --%>
+
+<%@include file="../../../common/declarations.jspf"%>
+
+<script type='text/javascript'>
+	google.setOnLoadCallback(drawTableEvolQuestion);
+
+	function drawTableEvolQuestion() {
+		jQuery.ajax({
+			type : "post",
+			url : "${url.base}${currentNode.path}.toolsStatsJSON.do",
+			data : "typeStat=QuestionsCount&statParam=weekly",
+			dataType : "json",
+			success : function(obj) {
+				if (obj == null)
+					return;
+				if (obj.rows) {
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Semaines');
+					data.addColumn('number', 'Questions');
+					data.addColumn('number', 'R\u00E9ponses FR');
+					data.addColumn('number', 'R\u00E9ponses RJ');
+					data.addColumn('number', 'R\u00E9ponses Pros');
+					data.addColumn('number', 'Total des r\u00E9ponses');
+
+					var rows = obj.rows;
+					for ( var i in rows) {
+						var jsonRow = rows[i];
+						var row = [];
+						for ( var j in jsonRow) {
+							row[j] = jsonRow[j];
+						}
+						data.addRow(row);
+						log("- table - evolution des questions : " + row);
+					}
+
+					var chart = new google.visualization.Table(document
+							.getElementById('table_QuestionCount_div'));
+					chart.draw(data, {
+						showRowNumber : false
+					});
+				}
+			}
+		});
+	}
+</script>
+<div id='table_QuestionCount_div'></div>

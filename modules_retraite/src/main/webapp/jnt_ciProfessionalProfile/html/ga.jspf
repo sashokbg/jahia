@@ -1,0 +1,25 @@
+<%--
+	@author : kirilov
+	@created : 13 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+
+<!-- Google Analytics Callbacks -->
+<template:addResources>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('.pagination span').click(function(){
+					trackEvent(['Les professionnels','Derouler reponses professionnel']);
+				});
+				$('.ligneReponsePro a').click(function(){
+					trackEvent(['Les professionnels','Voir reponses professionnel']);
+				});
+				$('#userThematic .userInfoLine a').click(function(){
+					trackEvent(['Les professionnels','Voir thematique professionnel']);
+				});
+				
+			});
+		</script>
+</template:addResources>

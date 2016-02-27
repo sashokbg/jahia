@@ -1,0 +1,84 @@
+<%--
+	@author : el-aarko
+	@created : 12 sept. 2012
+	@Id : ciMemberProfile_questions_and_replies.jspf
+	@description : les questions et les reponses d'un membre
+
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<template:addResources type="javascript" resources="jquery.tmpl.min.js"/>
+<template:addResources type="javascript" resources="ciUserActivities/ciUserActivities.js"/>
+
+<jcr:node var="userNode" uuid="${displayedUser.identifier}"/>
+<%@include file="../../common/ciSetUserInfo.jspf" %>
+
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var getMemberQuestions = function() {
+				displayMoreElements("${url.base}${currentNode.path}.ciGetUserQuestions.do", "name=${userNode.name}",
+						offsetUserQuestionsIndex, "#memberQuestions", "#getMoreMemberQuestionsLink", 
+						questionHtmlTemplate);
+			};
+			
+			var userRepliesCallback = function(response) {
+				$("p.detail").each(function() {
+					$(this).html(unescape($(this).text()));
+					$(this).removeClass("detail");
+				});
+			};
+			var getMemberReplies = function() {
+				displayMoreElements("${url.base}${currentNode.path}.ciGetUserReplies.do", "name=${userNode.name}",
+						offsetUserRepliesIndex, "#reponseAutresMembres", "#getMoreMemberRepliesLink", 
+						questionWithReplyHtmlTemplateNoLast, userRepliesCallback);
+			};
+			
+			
+			getMemberQuestions();
+			getMemberReplies();
+			
+			$("#getMoreMemberQuestionsLink").click(getMemberQuestions);
+			$("#getMoreMemberRepliesLink").click(getMemberReplies);
+		});
+	</script>
+</template:addResources>
+
+<div class="dataSection paddingMedium bandUp">
+	<h4 class="band">Questions</h4>
+</div>
+<c:if test="${empty nbOfQuestions or nbOfQuestions eq 0}">
+	<div id="memberQuestions" class="dataSection bandUp">
+		Ce membre n'a pas encore pos&eacute; de question.
+	</div>
+</c:if>
+<div id="memberQuestions" class="dataSection bandUp userQuestions">
+</div>
+<c:if test="${nbOfQuestions gt 0}">
+	<div class="voirToutes dataSection bandDown">
+		<a id="getMoreMemberQuestionsLink" class="lienBleu voirToutesQuestions">Voir plus de questions (<span class="nbOfElements"></span>)</a>
+	</div>
+</c:if>
+
+<div class="dataSection paddingMedium">
+	<h4 class="band">R&eacute;ponses aux autres membres</h4>
+</div>
+<c:if test="${empty nbOfReplies or nbOfReplies eq 0}">
+	<div id="memberQuestions" class="dataSection bandUp last">
+		Ce membre n'a pas encore post&eacute; de r&eacute;ponse.
+	</div>
+</c:if>
+<div id="userAnswers" class="dataSection bandUp">
+	<div id="reponseAutresMembres">
+	</div>
+</div>
+<c:if test="${nbOfReplies gt 0}">
+	<div class="voirToutes dataSection ">
+		<a id="getMoreMemberRepliesLink" class="lienBleu voirToutesQuestions">Voir plus de r&eacute;ponses(<span class="nbOfElements"></span>)</a>
+	</div>
+</c:if>
+
+<div class="voirTousPro dataSection last">
+	<a href="${renderContext.site.properties['membersListLink'].node.url }"><fmt:message key="member.seeAll" /></a>
+</div>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	
+	<context:component-scan base-package="org.jahia.modules.ci.tools.moderator" />
+
+	<!--___________________________-->
+	<!-- COMMON AND PUBLIC ACTIONS -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<!-- authentication part -->
+	<bean class="org.jahia.modules.ci.user.actions.LoginAction">
+		<property name="name" value="ciLogin" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.ForgottenPasswordAction">
+		<property name="name" value="ciForgottenPasswordAction" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	
+	<!-- user part -->
+	<bean class="org.jahia.modules.ci.user.actions.InscriptionForm">
+		<property name="name" value="ciRegister" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.LoadAvatarAction">
+		<property name="name" value="ciLoadAvatar" />
+		<property name="requireAuthenticatedUser" value="false" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.CheckUserUnicityAction">
+		<property name="name" value="ciCheckUserUnicityAction" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	
+	<!-- forum part -->
+	<bean class="org.jahia.modules.ci.forum.actions.IncrementViewCount">
+		<property name="name" value="ciIncrementViewCount" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.IncrementScore">
+		<property name="name" value="ciIncrementScore" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.FlagMessageAction">
+		<property name="name" value="ciFlagMessageAction" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+		<property name="requireAuthenticatedUser" value="false" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.SendUserFriendlyMessageAction">
+		<property name="name" value="ciSendFriendlyMessageUsersAction" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+
+	<!-- mix -->
+	<bean class="org.jahia.modules.ci.forum.actions.GetThematicNodes">
+		<property name="name" value="ciGetThematicNodes" />
+		<property name="requireAuthenticatedUser" value="false" />
+	</bean>
+
+	<!-- newsletter part -->
+	<bean class="org.jahia.modules.ci.newsletter.actions.SubscribeAction">
+		<property name="name" value="ciSubscribeNewsletter" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="subscriptionService" ref="subscriptionService" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.newsletter.actions.UnsubscribeNewsletterAction">
+		<property name="name" value="ciUnsubscribeNewsletter" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+		<property name="requireAuthenticatedUser" value="false" />
+		<property name="subscriptionService" ref="subscriptionService" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	
+	<!-- search form part -->
+	<bean class="org.jahia.modules.ci.search.actions.CiAutoComplete">
+		<property name="name" value="autoComplete" />
+		<property name="requireAuthenticatedUser" value="false" />
+	</bean>
+
+
+	<!--_________________________________-->
+	<!-- COMMON BUT ONLY MEMBERS ACTIONS -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<!-- user part -->
+	<bean class="org.jahia.modules.ci.user.actions.UserProfile">
+		<property name="name" value="ciUserProfile" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.GetUserRubricQuestions">
+		<property name="name" value="ciGetUserRubricQuestions" />
+		<property name="requireAuthenticatedUser" value="true" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.GetUserRubricArticles">
+		<property name="name" value="ciGetUserRubricArticles" />
+		<property name="requireAuthenticatedUser" value="true" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.GetUserThematicsQuestions">
+		<property name="name" value="ciGetUserThematicQuestions" />
+		<property name="requireAuthenticatedUser" value="true" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.GetUserQuestions">
+		<property name="name" value="ciGetUserQuestions" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.GetUserReplies">
+		<property name="name" value="ciGetUserReplies" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.SendUserMessageAction">
+		<property name="name" value="ciSendUserMessageAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.ChangePasswordAction">
+		<property name="name" value="ciChangePasswordAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.CheckCorrectPasswordAction">
+		<property name="name" value="ciCheckCorrectPasswordAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.UnsubscribeAction">
+		<property name="name" value="ciUnsubscribe" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	
+	<!-- Forum part -->
+	<bean class="org.jahia.modules.ci.forum.actions.AddQuestionAction">
+		<property name="name" value="ciAddQuestionAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.AddReply">
+		<property name="name" value="ciAddReplyAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+	</bean>
+
+
+	<!--_____________________-->
+	<!-- FORUM ADMINISTATION -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<bean class="org.jahia.modules.ci.forum.actions.DeleteReplyAction">
+		<property name="name" value="ciDeleteReplyAction" />
+		<property name="requiredPermission" value="deleteReply" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.DeleteQuestionAction">
+		<property name="name" value="deleteQuestion" />
+		<property name="requiredPermission" value="deleteQuestion" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.MoveQuestionAction">
+		<property name="name" value="ciMoveQuestionAction" />
+		<property name="requiredPermission" value="editQuestion" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.SeoUpdateAction">
+		<property name="name" value="ciSeoUpdateAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="editQuestion" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	<bean class="org.jahia.modules.ci.forum.actions.SetPickableNodeAction">
+		<property name="name" value="setPickableNode" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="setPickableNode" />
+		<property name="jcrTemplate" ref="jcrTemplate" />
+	</bean>
+	
+	
+	<!--_____________________-->
+	<!-- USER ADMINISTRATION -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<bean class="org.jahia.modules.ci.user.actions.SwitchUserClassAction">
+		<property name="name" value="ciSwitchUserClassAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="editUser" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.UpdateUserPropertyAction">
+		<property name="name" value="ciUpdateUserPropertyAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="editUser" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.UpdateProfessionalPropertyAction">
+		<property name="name" value="ciUpdateProfessionalPropertyAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="editProfessional" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+	</bean>
+	
+	
+	<!--_________________-->
+	<!-- MODERATOR TOOLS -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<bean class="org.jahia.modules.ci.tools.moderator.extraction.excel.users.UsersExcelAction">
+		<property name="name" value="ciUsersExtractor" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="moderatorTools" />
+		<property name="userManagerService" ref="JahiaUserManagerService" />
+		<property name="subscriptionService" ref="subscriptionService" />
+	</bean>
+	<bean class="org.jahia.modules.ci.tools.moderator.extraction.excel.stats.StatsExcelAction">
+		<property name="name" value="toolsStatsExcel" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="moderatorTools" />
+	</bean>
+	<bean class="org.jahia.modules.ci.tools.moderator.extraction.json.stats.StatsJSONAction">
+		<property name="name" value="toolsStatsJSON" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="moderatorTools" />
+	</bean>
+	<bean class="org.jahia.modules.ci.user.actions.ManualNotificationRunAction">
+		<property name="name" value="manualNotificationRunAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="moderatorTools" />
+	</bean>
+	<bean class="org.jahia.modules.ci.tools.moderator.PatcherAction">
+		<property name="name" value="patcherAction" />
+		<property name="requireAuthenticatedUser" value="true" />
+		<property name="requiredPermission" value="moderatorTools" />
+	</bean>
+
+	<!--_____________________-->
+	<!-- QUESTION TITLE RULE -->
+	<!--¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯-->
+	
+	<bean id="questionFlushCacheNodeBackgroundAction" parent="abstractFlushCacheOnNodeBackgroundAction">
+        <property name="startLevel" value="0"/>
+        <property name="levelsUp" value="2"/>
+        <property name="name" value="questionFlushCacheNodeBackgroundAction"/>
+    </bean>
+</beans>

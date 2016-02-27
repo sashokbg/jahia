@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Built-By: ALAO
+Build-Jdk: 1.7.0_45
+Created-By: Maven Integration for Eclipse
+Implementation-Title: ALM Modules Communaute Retraite
+Implementation-URL: 
+Implementation-Vendor: 
+Implementation-Vendor-Id: 
+Implementation-Version: 1.0
+Specification-Title: ALM Modules Communaute Retraite
+Specification-Vendor: 
+Specification-Version: 1.0
+depends: Default Jahia Templates
+module-type: module
+package-name: ALM Modules Communaute Retraite
+root-folder: modules_retraite
+

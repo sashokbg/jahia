@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+
+<urlrewrite>
+    <!--HOME PAGE-->
+    <rule>
+        <from>^/$</from>
+        <to last="true">
+            /cms/render/live/fr/sites/preparonsmaretraite/retraite.html
+        </to>
+    </rule>
+
+    <rule>
+        <name>cr.all.301</name>
+        <from>^/cms/retraite/(.*)?$</from>
+        <to type="permanent-redirect" last="true">/retraite/$1</to>
+    </rule>
+
+    <rule>
+        <name>cr.r.301</name>
+        <from>^(/cms)?/retraite\.html$</from>
+        <to type="permanent-redirect" last="true">/</to>
+    </rule>
+    <outbound-rule>
+        <name>cr.or.accueil</name>
+        <from>^/retraite\.html$</from>
+        <to last="true">/</to>
+    </outbound-rule>
+
+    <!--SITEMAP.XML-->
+    <rule>
+        <from>^/sitemap.xml$</from>
+        <to last="true">
+            /cms/render/live/fr/sites/preparonsmaretraite/retraite.sitemap.xml
+        </to>
+        <!--<to last="true">-->
+        <!--/cms/render/live/%{attribute:siteDefaultLanguage}/sites/%{attribute:jahiaSiteKeyForCurrentServerName}/retraite.sitemap.xml-->
+        <!--</to>-->
+    </rule>
+</urlrewrite>

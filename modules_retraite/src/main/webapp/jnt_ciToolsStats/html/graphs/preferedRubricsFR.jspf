@@ -1,0 +1,78 @@
+<%--
+	@author : lakreb
+	@created : 25 janv. 2013
+	@Id : idDeLaPage
+	@description : affiche le graph camembert des rubriques preferees des futurs retraites
+
+ --%>
+
+<%@include file="../../../common/declarations.jspf"%>
+
+<!-- 	thematiques preferees des ret. Juniors -->
+<script type='text/javascript'>
+	google.setOnLoadCallback(drawPieChart);
+
+	function drawPieChart() {
+		jQuery.ajax({
+			type : "post",
+			url : "${url.base}${currentNode.path}.toolsStatsJSON.do",
+			data : "typeStat=RubricsFutRet&param=",
+			dataType : "json",
+			success : function(obj) {
+				if (obj == null)
+					return;
+				if (obj.rows) {
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Rubriques');
+					data.addColumn('number', 'Nombre');
+
+					addColumnsWithPercent(data, obj, "rubrics FR");
+					
+					var chart = new google.visualization.PieChart(document
+							.getElementById('PieChart_RubricsFutRet_div'));
+					chart.draw(data, {
+						'showRowNumber' : false,
+						legend : 'none'
+					});
+					var table = new google.visualization.Table(document
+							.getElementById('tablePie_RubricsFutRet_div'));
+					table.draw(data, null);
+					// When the table is selected, update the orgchart.
+					google.visualization.events.addListener(table, 'select',
+							function() {
+								chart.setSelection(table.getSelection());
+							});
+
+					// When the orgchart is selected, update the table visualization.
+					google.visualization.events.addListener(chart, 'select',
+							function() {
+								table.setSelection(chart.getSelection());
+							});
+				}
+			}
+		});
+	}
+</script>
+
+
+<br />
+<br />
+<h3>
+	<fmt:message key="ciToolsStat.thematicsFutRet" />
+	&nbsp;&nbsp;&nbsp;&rarr;
+</h3>
+<a class="exportIcon"
+	href="${url.base}${currentNode.path}.toolsStatsExcel.do?extractor=UserDomains&statParam=fr"
+	title="Exporter les rubriques pr&eacute;f&eacute;r&eacute;es des futurs retrait&eacute;s"></a>
+<br />
+<br />
+<table class="pieTable" >
+	<tr>
+		<td class="graphWrapper">
+			<div id='PieChart_RubricsFutRet_div' class="pieBiComponent  pieChart"></div>
+		</td>
+		<td class="graphWrapper">
+			<div id='tablePie_RubricsFutRet_div' class="pieBiComponent  pieTable"></div>
+		</td>
+	</tr>
+</table>

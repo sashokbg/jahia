@@ -1,0 +1,55 @@
+<%--
+	@author : pichards
+	@created : 17 sept. 2012
+	@Id : US402
+	@description : Affichage du profil d'un moderateur (vue moderateur)
+ --%>
+
+<%@include file="../../common/declarations.jspf"%>
+
+<template:addResources type="javascript" resources="jquery.jeditable.mini.js"/>
+<template:addResources type="javascript" resources="jquery.tmpl.min.js" />
+<template:addResources type="javascript" resources="ciUserProfil/ciUserProfil.js" />
+<template:addResources type="javascript" resources="jquery.jeditable.treeItemSelector.js"/>
+<template:addResources type="javascript" resources="editable/profile.js"/>
+
+<jcr:node var="userNode" uuid="${displayedUser.identifier}" />
+<%@include file="../../common/ciSetUserInfo.jspf"%>
+
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(
+			function() {
+				loadThematicsAction = "${url.base}${currentNode.path}.ciGetThematicNodes.do";
+				switchUserClassAction = "${url.base}${currentNode.path}.ciSwitchUserClassAction.do";
+				editableActionUrl = "${url.base}${currentNode.path}.ciUpdateUserPropertyAction.do";
+				pseudo = "${pseudo}";
+				userName = "${userNode.name}";
+				
+				initSituationRadioButtons();
+			}
+		);
+	</script>
+</template:addResources>
+
+<div id="userProfil" class="statutPro">	
+	<div id="userIdentity" class="dataSection last modo">
+		<div id="userPreview">
+			<div class="conteneurAvatar" id="userAvatar">
+				<img alt="Photo Avatar" height="70px" width="70px" src="${avatarSrc70}"  />
+			</div>
+			<div id="userInfoShort">
+				<span class="userInfoLine pseudo">
+					<span class="editableField" <c:out value="jcr:id='j:firstName'" escapeXml="false" />>${firstname}</span>&nbsp; 
+					<span class="editableField" <c:out value="jcr:id='j:lastname'" escapeXml="false" />>${lastname}</span>	
+				</span> 			
+				<span class="userInfoLine fonction editableField" <c:out value="jcr:id='j:function'" escapeXml="false" />>${empty function ? 'Mod&eacute;rateur' : function}</span>	
+				<br />
+				<a href="${contactLinkUrl}" class="userInfoLine modoLink" title="${contactLinkLabel}">${contactLinkLabel}</a>
+			</div>
+		</div>
+		<div class="breaker">
+			<!-- ne pas enlever -->
+		</div>
+	</div>
+</div>

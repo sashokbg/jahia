@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE urlrewrite PUBLIC "-//tuckey.org//DTD UrlRewrite 3.2//EN"
+        "http://tuckey.org/res/dtds/urlrewrite3.2.dtd">
+<urlrewrite>
+        <!-- Des regles de reecriture qui map la page /retraite.html a la racine du serveur -->
+
+        <rule>
+                <from>^/retraite.html</from> 
+                <to last="true" type="permanent-redirect">/</to>
+        </rule>
+
+        <rule>
+        <from>^/?$</from>
+                <condition type="attribute" name="jahiaSkipInboundSeoRules" operator="notequal">^true$</condition>
+
+                <condition type="attribute" name="jahiaSiteKeyForCurrentServerName" operator="notequal">^$</condition>
+                <condition type="attribute" name="vanityUrlTargetPath" operator="equal">^$</condition>
+
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?users/.*</condition>
+        		<condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?sites/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?files/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?robots.txt</condition>
+
+
+        <to last="true">/cms/render/live/%{attribute:siteDefaultLanguage}/sites/%{attribute:jahiaSiteKeyForCurrentServerName}/retraite.html</to>
+        </rule>
+
+
+        <rule>
+                <from>^/(.*)$</from>
+                <condition type="attribute" name="jahiaSkipInboundSeoRules" operator="notequal">^true$</condition>
+
+                <condition type="attribute" name="jahiaSiteKeyForCurrentServerName" operator="notequal">^$</condition>
+                <condition type="attribute" name="vanityUrlTargetPath" operator="equal">^$</condition>
+
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?users/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?retraite/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?sites/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?files/.*</condition>
+                <condition type="request-uri" operator="notequal">^(/[\p{Alnum}\-_]*)?/(cms/)?([a-z]{2}(_[A-Z]{2})?/)?robots.txt</condition>
+
+                <to last="true">/cms/render/live/%{attribute:siteDefaultLanguage}/sites/%{attribute:jahiaSiteKeyForCurrentServerName}/retraite/$1</to>
+        </rule>
+</urlrewrite>

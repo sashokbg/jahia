@@ -1,0 +1,118 @@
+<%--
+	@author : el-aarko
+	@created : 8 nov. 2012
+	@Id : idDeLaPage
+	@description : queFaitLaJsp
+
+ --%>
+
+<%@include file="declarations.jspf"%>
+<%@include file="google_analytics_init.jspf"%>
+
+<template:addResources >
+	<script type="text/javascript">
+	
+	var debugGA = false;
+	var debugWaitInterval;
+	var userIdentifier = "${userInfos}";
+	var _gaq = _gaq || [];
+	$(document).ready(function(){
+		logGA = function(str) {
+			if (debugGA && window.console)
+				console.log('[GA Event] ' + str);
+		};
+		errGA = function(str) {
+			if (window.console)
+				console.error('[GA Event] ' + str);
+		};
+		_gaq.push([ '_setAccount', '${gaAccountID}' ]);
+		_gaq.push([ '_setMaxCustomVariables', 10]);
+		_gaq.push([ '_setCustomVar', 1, 'Utilisateur', userIdentifier, 2]);
+		
+		<c:if test="${isGaDev}">
+		// activates dev mode without DNS registered  
+		_gaq.push([ '_setDomainName', 'none']);
+		</c:if>	
+		
+		_gaq.push([ '_trackPageview', '${_gaqUrl}']);
+		logGA("Tracking Page View with url ${_gaqUrl}");
+		
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	});
+	</script>
+	<script type="text/javascript">
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// START - EVOL#142 : nouveau plan de taggage /////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		function trackEvent(p, anotherEvent) {
+			try {
+				
+				var trackIt = function(params, anotherEvent) {
+					params = params || [];
+					var gaqEvent = anotherEvent || '_trackEvent';
+
+					var gaqEventArr = [ gaqEvent ];
+
+					_gaq.push($.merge(gaqEventArr, params));
+					logGA("Tracking Event with params [" + params + "]");
+				}
+				
+				if (typeof p[0] != 'object'){
+					p = [p];
+				}
+					
+				for ( var i in p) {
+					trackIt(p[i], anotherEvent);
+				}
+				
+				var paramInterval = parseInt('${gaTimeout}');
+				var interval;
+
+				if (100 < paramInterval < 10000)
+					interval = paramInterval;
+				else
+					interval = 100;
+
+				if (debugGA)
+					interval = debugWaitInterval || 5000;
+
+				var start = new Date();
+				var end = new Date();
+				var currentInt = end - start;
+
+				// waiting for GA tracking before giving back hand on caller event
+				while (currentInt < interval) {
+					end = new Date();
+					currentInt = end - start;
+				}
+				logGA("Waiting for GA tracker " + currentInt + " ms");
+
+			} catch (err) {
+				errGA(err.message);
+			}
+		}
+
+		function trackPageview(url) {
+			try {
+				_gaq.push([ '_trackPageview', url ]);
+				logGA("Tracking Page View with url " + url);
+			} catch (err) {
+				errGA(err.message);
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// END - EVOL#142 : nouveau plan de taggage ///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	</script>
+</template:addResources>
+<template:addCacheDependency node="${renderContext.mainResource.node}" />

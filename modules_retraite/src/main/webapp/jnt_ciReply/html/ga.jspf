@@ -1,0 +1,22 @@
+<%--
+	@author : Bogdan Alexandrov
+	@created : 18 jan 2016
+	@Id : ga
+	@description : Ajout du google analytic sur signature des proffessionels
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<c:set var="gaTag" value="${renderContext.site.properties['signatureTagPro']}"/>
+
+<template:addResources>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.signatureContainer a').each(function () {
+                $(this).click(function () {
+                    trackEvent([${gaTag.string}]);
+                })
+            });
+        });
+    </script>
+</template:addResources>

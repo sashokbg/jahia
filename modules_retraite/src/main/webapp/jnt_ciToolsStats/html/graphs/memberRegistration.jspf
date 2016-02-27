@@ -1,0 +1,90 @@
+<%--
+	@author : lakreb
+	@created : 25 janv. 2013
+	@Id : idDeLaPage
+	@description : affiche le graph camembert des rubriques preferees des futurs retraites
+
+ --%>
+
+<%@include file="../../../common/declarations.jspf"%>
+
+<!-- 	Evolution de l'inscription des membres -->
+<script type='text/javascript'>
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		jQuery
+				.ajax({
+					type : "post",
+					url : "${url.base}${currentNode.path}.toolsStatsJSON.do",
+					data : "typeStat=MemberRegistration&statParam=daily",
+					dataType : "json",
+					success : function(obj) {
+
+						if (obj == null)
+							return;
+						//alert(obj.rows);
+						if (obj.rows) {
+							var data = new google.visualization.DataTable();
+							data.addColumn('date', 'Date');
+							data.addColumn('number',
+									'\u00C9volution des inscrits');
+
+							var rows = obj.rows;
+							for ( var i in rows) {
+								var jsonRow = rows[i];
+								var row = [];
+								for ( var j in jsonRow) {
+									row[j] = eval(jsonRow[j]);
+								}
+								data.addRow(row);
+								log("- graph - evolution des inscrits : " + row);
+
+							}
+							var chart = new google.visualization.AnnotatedTimeLine(
+									document
+											.getElementById('chart_RegistrationMember_div'));
+							chart.draw(data, {
+								// 'allValuesSuffix': '', // A suffix that is added to all values
+								'colors' : [ 'blue' ], // The colors to be used
+								'displayAnnotations' : false,
+								'displayExactValues' : false, // Do not truncate values (i.e. using K suffix)
+								'displayLegendValues' : true,
+								'displayRangeSelector' : true, // Do not sow the range selector
+								'displayZoomButtons' : true, // DO not display the zoom buttons
+								'fill' : 20, // Fill the area below the lines with 20% opacity
+								'allowHtml' : true,
+								'legendPosition' : 'newRow', // Can be sameRow
+								//'max': 100000, // Override the automatic default
+								//'min':  100000, // Override the automatic default
+								'scaleColumns' : [ 0, 0 ], // Have two scales, by the first and second lines
+								'scaleType' : 'allfixed', // See docs...
+								'thickness' : 1
+							// Make the lines thicker
+							//'zoomStartTime': new Date(2012, 11 ,13), 
+							//'zoomEndTime': new Date(2012, 12 ,12)
+							});
+						}
+					}
+				});
+	}
+</script>
+<br />
+<br />
+
+<br />
+<br />
+<h3>
+	<fmt:message key="ciToolsStat.registrationMember" />
+	&nbsp;&nbsp;&nbsp;&rarr;
+</h3>
+<a class="exportIcon"
+	href="${url.base}${currentNode.path}.toolsStatsExcel.do?extractor=SiteInscriptions"
+	title="Exporter l'&eacute;volution des inscriptions"></a>
+<br />
+<br />
+<%@include file="../tables/memberRegistration.jspf" %>
+<br />
+<br />
+<div id='chart_RegistrationMember_div'
+	style='width: 970px; height: 240px;'></div>
+	

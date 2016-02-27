@@ -1,0 +1,8 @@
+set HDD=C
+rem echo "%HDD%"
+cd D:\Travail\development\jahia_retraite_project\jahia_retraite_project-modules\modules_retraite 
+call mvn clean package -Dmaven.test.skip=true jahia:deploy -Djahia.deploy.targetServerDirectory=C:\Ent-Jahia_xCM_v6.6.2.5\tomcat
+call del /F /Q "%HDD%:\Ent-Jahia_xCM_v6.6.2.5\tomcat\webapps\ROOT\WEB-INF\var\shared_modules\modules_retraite*.war"
+call copy target\modules_retraite*.war "%HDD%:\Ent-Jahia_xCM_v6.6.2.5\tomcat\webapps\ROOT\WEB-INF\var\shared_modules" /Y
+call rmdir /S /Q "%HDD%:\Ent-Jahia_xCM_v6.6.2.5\tomcat\webapps\ROOT\modules\modules_retraite"
+pause

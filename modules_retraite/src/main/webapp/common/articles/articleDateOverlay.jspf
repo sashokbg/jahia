@@ -1,0 +1,14 @@
+<%--
+	@author : lakreb
+	@created : 23 sept. 2013
+	@Id : [ANO]#133 : bug sur la date des articles 
+	@description : force la date de publication si le champ est renseigne
+
+ --%>
+
+<%@include file="../declarations.jspf" %>
+
+<jcr:nodeProperty name="enforcedDate" node="${articleNode}" var="enforcedDate" />
+<c:if test="${not empty enforcedDate}">
+	<c:set var="publishDate" value="${enforcedDate}" />
+</c:if>

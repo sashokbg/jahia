@@ -1,0 +1,87 @@
+<%--
+	@author : el-aarko
+	@created : 20 juil. 2012
+	@Id : box de connexion javascript
+	@description : script javascript de la box de connexion
+
+ --%>
+<%@ include file="../../common/declarations.jspf"%>
+
+
+<fmt:message var="errorMsg" key="jnt_ciConnectionBox.badLoginPassword.error" /> 
+
+<template:addResources>
+<script type="text/javascript">
+	// Main fonction :
+    $(document).ready(function() {
+    	// fonctions de conncexion :
+    	var ciLogon = function () {
+    		$("#loginFailError").html("");
+    		if (trim($("#cb_username").val()) == "E-mail" || trim($("#cb_username").val()) == "" || trim($("#cb_password").val()) == "") {
+    			$(".messageId-KO").removeClass("hide");
+    			$("#loginFailError").html("${errorMsg}");
+    			$("#cb_username").addClass("messageErreur");
+    			$("#cb_password").addClass("messageErreur");
+    			return;
+    		}
+    		
+       		jQuery.ajax({
+       			dataType : "json",
+       			type : "post",
+       			url : "${url.base}${currentNode.path}.ciLogin.do",
+       			data : {
+       				username:$("#cb_username").val(),
+       				password:$("#cb_password").val()
+       			},
+       			success : function(response) {
+       				var result;
+       				
+        			if(response.OK){ // utilisateur authentifie
+        				result = 1;
+        				trackEvent(['Connection','Connection bloc gauche','${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);
+        			}
+        			else if(response.KO)// utilisateur non trouve ou mdp incorrect
+        				result = -1;
+        			else if(response.CONFLICT) // deux emails presents en base
+        				result = 0;
+        		    
+        			if (result == 1){
+        		    	var old_href = location.href;
+        		    	location.href = location.href.replace("http://", "${protocol}://");
+        		    	//s'assurer que la page est rechargee meme si le protocle ne change
+        		    	if(old_href == location.href)
+        		    		location.reload();
+        		    }
+    				else if(result == -1) {
+    					$(".messageId-KO").removeClass("hide");
+    					$("#loginFailError").html("${errorMsg}");
+    					$("#cb_username").addClass("messageErreur");
+    	    			$("#cb_password").addClass("messageErreur");
+    				}
+    				else if(result == 0) {
+    					$(".messageId-KO").removeClass("hide");
+   	       				$("#loginFailError").html("Impossible d'authentifier cet utilisateur.");       				
+	   	       			$("#cb_username").addClass("messageErreur");
+		    			$("#cb_password").addClass("messageErreur");
+    				}
+       			}
+       		});
+        };
+        $("#logonLink").click(ciLogon);
+        $("#cb_username, #cb_password").keypress(function (e) {
+ 		    if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+ 		    	ciLogon();
+ 		    	return false;
+ 		    } else {
+ 		        return true;
+ 		    }
+		});
+        
+        $("#conteneurLogin2 h5").click(switchConnectionTabs);
+    	<c:if test="${switchTabs.string eq 'mouseMove'}">
+       		$("#conteneurLogin2 h5").click(null);
+       		$("#conteneurLogin2 h5").mousemove(switchConnectionTabs);
+        </c:if>
+    });
+</script>
+</template:addResources>

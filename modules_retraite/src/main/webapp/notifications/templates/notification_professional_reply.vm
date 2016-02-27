@@ -1,0 +1,34 @@
+#* @vtlvariable name="currentSite" type="org.jahia.services.content.decorator.JCRSiteNode" *#
+<html>
+    <head>
+    	<style>
+    		a {
+    			color: #009fcc;
+    		}
+			body {
+				font-family: verdana;
+				font-size: 10pt;
+			}
+    	</style>
+    </head>
+    <body>
+        <p>
+        	Bonjour,
+        </p>
+        <p>
+			<strong>${pseudo}</strong> est intervenu dans la discussion &agrave; laquelle vous avez particip&eacute;.
+        </p>
+        <p>
+			Veuillez consulter ce lien pour v&eacute;rifier si une r&eacute;ponse de votre part est n&eacute;cessaire :
+			<br />
+			<a href="${link}" title="${linkTitle}">${linkTitle}</a>
+        </p>
+        <p>
+			Cordialement,
+        </p>
+        <p>
+            L&rsquo;&eacute;quipe Pr&eacute;parons ma retraite
+            <br /><a title="Pr&eacute;parons ma retraite.fr" href="http://www.preparonsmaretraite.fr">www.preparonsmaretraite.fr</a>
+        </p>
+    </body>
+</html>

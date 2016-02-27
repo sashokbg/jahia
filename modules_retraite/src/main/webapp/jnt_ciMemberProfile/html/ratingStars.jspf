@@ -1,0 +1,4 @@
+<div class="stars">
+    <template:addResources type="css" resources="ciProfil/ratingStarsMemberProfile.css"/>
+    <%@include file="../../common/ratingStars.jspf"%>
+</div>

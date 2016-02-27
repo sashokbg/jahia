@@ -1,0 +1,22 @@
+<%--
+	@author : kirilov
+	@created : 21 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+<%-- Google Analytics Callbacks --%>
+<%@include file="../../common/declarations.jspf" %>
+
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btDesinscrire').click(function (){
+				var reason = $('.lstRaisonDesinscrire option:selected').text();
+				if(reason != 'Sélectionnez'){
+					trackEvent(['Espace membre','Desinscription',reason]);
+				}
+			});
+		});
+	</script>
+</template:addResources>

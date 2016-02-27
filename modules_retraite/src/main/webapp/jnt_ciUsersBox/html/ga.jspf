@@ -1,0 +1,60 @@
+<%--
+	@author : Sylvain Pichard
+	@created : 12 aout 2013
+	@Id : ga
+	@description : Ajout du google analytic sur la page
+ --%>
+
+
+<%@include file="../../common/declarations.jspf" %>
+
+<%-- Google analytic --%>
+<template:addResources >
+	<script type="text/javascript">
+		$(document).ready(function() {			
+			$('a.lienVoirTousMembres').each(function (index){
+				$(this).click( function(){
+					var text = $(this).parents('.blocSlideMembres').attr('class');
+					if (text.search('pro') >= 0 ) {
+						trackEvent(['Les derniers professionnels','Tous professionnels',document.title]);
+						} 
+					else if(text.search('activ') >= 0 ) {
+						trackEvent(['Les membres les plus actifs','Voir tous les membres', '['+window.location.href+']']);
+					}else{
+						trackEvent(['Les derniers membres','Tous membres',document.title]);
+					}
+				})
+			});	
+
+			$('.mb-inside a').each(function (index){
+				$(this).click( function(){
+					var text = $(this).parents('.blocSlideMembres').attr('class');
+					if (text.search('pro') >= 0 ) {
+						trackEvent(['Les derniers professionnels','Voir dernier professionnel',document.title]);
+						} 
+					else if(text.search('activ') >= 0 ) {
+						trackEvent(['Les membres les plus actifs','Clic sur un membre actif','['+window.location.href+']']);
+					}else {
+						trackEvent(['Les derniers membres','Voir dernier membre',document.title]);
+					}
+				})
+			});	
+
+			$('.mb-scrollButtons').each(function (index){
+				$(this).click( function(){
+					var text = $(this).parents('.blocSlideMembres').attr('class');
+					if (text.search('pro') >= 0 ) {
+						trackEvent(['Les derniers professionnels','Derouler professionnels',document.title]);
+						} 
+					else if(text.search('activ') >= 0 ) {
+						trackEvent(['Les membres les plus actifs','Derouler les membres actifs', '['+window.location.href+']']);
+					}else {
+						trackEvent(['Les derniers membres','Derouler membres',document.title]);
+					}
+				})
+			});	
+			
+			
+		});
+	</script>
+</template:addResources>

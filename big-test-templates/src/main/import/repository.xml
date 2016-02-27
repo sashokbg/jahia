@@ -7,34 +7,52 @@
                           j:moduleType="templatesSet"
                           j:title="Big Test Templates"
                           jcr:primaryType="jnt:module">
-
-            <portlets jcr:primaryType="jnt:portletFolder"/>
-            <files jcr:primaryType="jnt:folder"/>
-            <contents jcr:primaryType="jnt:contentFolder"/>
-            <templates jcr:primaryType="jnt:templatesFolder">
-                <files jcr:primaryType="jnt:folder">
-                    <themes jcr:primaryType="jnt:folder">
-                            <default jcr:primaryType="jnt:folder"/>
-                    </themes>
-                </files>
+                
+                <portlets jcr:primaryType="jnt:portletFolder"/>
+                <files jcr:primaryType="jnt:folder"/>
                 <contents jcr:primaryType="jnt:contentFolder"/>
+                <templates jcr:primaryType="jnt:templatesFolder">
+                    <files jcr:primaryType="jnt:folder">
+                        <themes jcr:primaryType="jnt:folder">
+                            <default jcr:primaryType="jnt:folder"/>
+                        </themes>
+                    </files>
+                    <contents jcr:primaryType="jnt:contentFolder"/>
                     <base j:theme="/modules/big-test-templates/templates/files/themes/default"
                   j:view="big-test-templates"
                   jcr:mixinTypes="jmix:theme"
                   jcr:primaryType="jnt:template">
-                    <home jcr:primaryType="jnt:pageTemplate"/>
-                    <simple jcr:primaryType="jnt:pageTemplate"/>
-                </base>
-                    <content-template j:applyOn="jnt:content"
-                              j:hiddenTemplate="true"
-                              j:priority="1"
+                        <base-template j:hiddenTemplate="false"
                               j:view="big-test-templates"
-                              jcr:primaryType="jnt:contentTemplate">
-                    <pagecontent jcr:primaryType="jnt:contentList">
-                            <main-resource-display j:mainResourceView="default" jcr:primaryType="jnt:mainResourceDisplay"/>
-                    </pagecontent>
-                </content-template>
-            </templates>
+                              jcr:primaryType="jnt:pageTemplate">
+                            <j:translation_en jcr:language="en"
+                                    jcr:mixinTypes="mix:title"
+                                    jcr:primaryType="jnt:translation"
+                                    jcr:title="Base Template"/>
+                        </base-template>
+                        <home j:hiddenTemplate="false"
+                     j:view="big-test-templates"
+                     jcr:primaryType="jnt:pageTemplate">
+                            <j:translation_en jcr:language="en"
+                                    jcr:primaryType="jnt:translation"
+                                    jcr:title="home"/>
+                        </home>
+                    </base>
+                    <two-columns-1 j:hiddenTemplate="false" jcr:primaryType="jnt:template">
+                        <j:translation_en jcr:language="en"
+                                 jcr:mixinTypes="mix:title"
+                                 jcr:primaryType="jnt:translation"
+                                 jcr:title="two-columns"/>
+                        <main-two-columns-template j:hiddenTemplate="false"
+                                          j:view="2columns"
+                                          jcr:primaryType="jnt:pageTemplate">
+                            <j:translation_en jcr:language="en"
+                                    jcr:mixinTypes="mix:title"
+                                    jcr:primaryType="jnt:translation"
+                                    jcr:title="Main Two Columns Template"/>
+                        </main-two-columns-template>
+                    </two-columns-1>
+                </templates>
                 
                 <home j:isHomePage="true"
                j:templateName="home"
@@ -44,6 +62,6 @@
                               jcr:primaryType="jnt:translation"
                               jcr:title="Home"/>
                 </home>
-        </big-test-templates>
+            </big-test-templates>
     </modules>
 </content>

@@ -1,0 +1,102 @@
+<template:addResources type="javascript" resources="jwysiwyg/jquery.wysiwyg.js"/>
+<template:addResources type="javascript" resources="jwysiwyg/jquery.jeditable.wysiwyg.js"/>
+<template:addResources type="javascript" resources="jwysiwyg/plugins/wysiwyg.i18n.js"/>
+<template:addResources type="javascript" resources="jwysiwyg/i18n/lang.fr.js"/>
+<template:addResources type="javascript" resources="jwysiwyg/controls/wysiwyg.link.js"/>
+<template:addResources type="javascript" resources="jwysiwyg/controls/wysiwyg.colorpicker.js"/>
+<template:addResources type="javascript" resources="signature.js"/>
+
+<template:addResources type="css" resources="jwysiwyg/jquery.wysiwyg.css"/>
+<template:addResources type="css" resources="signature.css"/>
+
+<div id="userSignature" class="dataSection signature">
+    <span class="userInfoLine titreSection"><fmt:message key="professional.signature"/></span>
+
+    <div class="editableRichText signatureContainer" <c:out value="jcr:id='signature'"
+        escapeXml="false"/>>${empty signature ? 'Signature non renseign&eacute;e' : signature}</div>
+</div>
+
+<script>
+    $(".editableRichText").editable(function (value, settings) {
+
+        var submitId = $(this).attr('jcr:id');
+        var data = "userName=" + userName;
+        data += "&propertyKey=" + submitId;
+        data += "&propertyValue=" + encodeURIComponent(cleanHTML(value));
+
+        if (submitId == "pseudoname") {
+            $.post(editableActionUrl, data, function (response) {
+                document.location = document.location.href.replace("=" + pseudo, "=" + value);
+            }, "json");
+        } else {
+            $.post(editableActionUrl, data, null, "json");
+        }
+        return (value);
+    }, {
+        type: 'wysiwyg',
+        onblur: 'ignore',
+        height: '40px',
+        width: '100%',
+        submit: '<div class="clear"></div><input type="button" style="float:right" value="" class="btEnvoyer" />',
+        cancel: '<input type="button" style="float:right" value="" class="btAnnuler" /><div class="clear"></div>',
+        tooltip: 'Cliquer pour \u00E9diter',
+        event: "dblclick",
+        wysiwyg: {
+            plugins: {
+                autoload: true,
+                i18n: {lang: "fr"}
+            },
+            controls: {
+                justifyLeft: {visible: false},
+                justifyCenter: {visible: false},
+                justifyRight: {visible: false},
+                justifyFull: {visible: false},
+
+                indent: {visible: false},
+                outdent: {visible: false},
+
+                subscript: {visible: false},
+                superscript: {visible: false},
+
+                insertOrderedList: {visible: false},
+                insertUnorderedList: {visible: false},
+
+                insertImage: {visible: false},
+                insertTable: {visible: false},
+                code: {visible: false},
+                html: {visible: false},
+
+                h1: {visible: false},
+                h2: {visible: false},
+                h3: {visible: false}
+            }
+        }
+    })
+
+    // removes MS Office generated guff
+    function cleanHTML(input) {
+        // 1. remove line breaks / Mso classes
+        var stringStripper = /(\n|\r| class=(")?Mso[a-zA-Z]+(")?)/g;
+        var output = input.replace(stringStripper, ' ');
+        // 2. strip Word generated HTML comments
+        var commentSripper = new RegExp('<!--(.*?)-->', 'g');
+        var output = output.replace(commentSripper, '');
+        var tagStripper = new RegExp('<(/)*(meta|link|span|\\?xml:|st1:|o:|font)(.*?)>', 'gi');
+        // 3. remove tags leave content if any
+        output = output.replace(tagStripper, '');
+        // 4. Remove everything in between and including tags '<style(.)style(.)>'
+        var badTags = ['style', 'script', 'applet', 'embed', 'noframes', 'noscript'];
+
+        for (var i = 0; i < badTags.length; i++) {
+            tagStripper = new RegExp('<' + badTags[i] + '.*?' + badTags[i] + '(.*?)>', 'gi');
+            output = output.replace(tagStripper, '');
+        }
+        // 5. remove attributes ' style="..."'
+        var badAttributes = ['style', 'start'];
+        for (var i = 0; i < badAttributes.length; i++) {
+            var attributeStripper = new RegExp(' ' + badAttributes[i] + '="(.*?)"', 'gi');
+            output = output.replace(attributeStripper, '');
+        }
+        return output;
+    }
+</script>
