@@ -27,6 +27,8 @@
 </div>
 <!--stop bodywrapper-->
 
+Settings: ${renderContext.mainResource.node.resolveSite.properties['displayFooterLinks'].string}
+
 <c:if test="${renderContext.editMode}">
     <template:addResources type="css" resources="edit.css" />
 </c:if>

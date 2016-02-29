@@ -1,2 +1,7 @@
 <jnt = 'http://www.jahia.org/jahia/nt/1.0'>
 <jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+
+[jnt:bigTestTemplateCustomization] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent
+
+[jmix:bigTestTemplateCustomization] mixin
+ - displayFooterLinks (string, choicelist) = 'home' < 'home', 'all', 'none'
