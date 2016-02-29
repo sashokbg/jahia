@@ -14,22 +14,6 @@
 			<templates j:rootTemplatePath="/" jcr:primaryType="jnt:templatesFolder">
                     <files jcr:primaryType="jnt:folder"/>
                     <contents jcr:primaryType="jnt:contentFolder"/>
-				<site-settings-base j:view="siteSettings"
-                                jcr:mixinTypes="jmix:useUILocale"
-                                jcr:primaryType="jnt:template">
-                        <chat j:applyOn="jnt:virtualsite"
-                     j:defaultTemplate="false"
-						j:hiddenTemplate="true"
-                     j:priority="100"
-                     j:requiredPermissionNames="siteAdminLanguages"
-                     j:titleKey="siteSettings.label.test"
-                     jcr:mixinTypes="jmix:rbTitle"
-						jcr:primaryType="jnt:contentTemplate">
-						<pagecontent jcr:primaryType="jnt:contentList">
-                                <chat jcr:primaryType="jnt:siteSettingsTest"/>
-						</pagecontent>
-					</chat>
-				</site-settings-base>
 			</templates>
                 
 		</big-test-module>

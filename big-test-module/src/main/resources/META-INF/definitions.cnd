@@ -18,8 +18,6 @@
 	- countries (string, choicelist[country,flag]) multiple
 	- tripType (string, choicelist[resourceBundle]) < plane, train, bus
 
-[jnt:siteSettingsTest] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent
-
 [acmemix:siteOptions] mixin 
  extends = jnt:virtualsite
  itemtype = options
