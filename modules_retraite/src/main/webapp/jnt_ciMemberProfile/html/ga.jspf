@@ -1,0 +1,22 @@
+<%--
+	@author : kirilov
+	@created : 13 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+
+<!-- Google Analytics Callbacks -->
+<template:addResources>
+	<c:set var="requestVar" value="<%=request.getQueryString()%>"/>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('#userContact').click(function(){
+					trackEvent(['Les membres','Contacter membre']);
+					<c:if test="${connected }">
+						trackPageview('/popin-contacter-membre');
+					</c:if>
+				});
+			});
+		</script>
+</template:addResources>

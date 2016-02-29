@@ -1,0 +1,51 @@
+<%--
+	@author : foo
+	@created : 25 janv. 2013
+	@Id : idDeLaPage
+	@description : affiche le tableau des chiffres cles
+
+ --%>
+
+<%@include file="../../../common/declarations.jspf"%>
+
+<script type='text/javascript'>
+	google.setOnLoadCallback(drawTableEvolQuestion);
+
+	function drawTableEvolQuestion() {
+		jQuery.ajax({
+			type : "post",
+			url : "${url.base}${currentNode.path}.toolsStatsJSON.do",
+			data : "typeStat=MemberRegistration&statParam=weekly",
+			dataType : "json",
+			success : function(obj) {
+				if (obj == null)
+					return;
+				if (obj.rows) {
+					var data = new google.visualization.DataTable();
+					data.addColumn('string', 'Semaines');
+					data.addColumn('number', 'Inscrits RJ');
+					data.addColumn('number', 'Inscrits FR');
+					data.addColumn('number', 'Total');
+
+					var rows = obj.rows;
+					for ( var i in rows) {
+						var jsonRow = rows[i];
+						var row = [];
+						for ( var j in jsonRow) {
+							row[j] = jsonRow[j];
+						}
+						data.addRow(row);
+						log("- table - evolution des inscrits : " + row);
+					}
+
+					var chart = new google.visualization.Table(document
+							.getElementById('table_MemberRegistration_div'));
+					chart.draw(data, {
+						showRowNumber : false
+					});
+				}
+			}
+		});
+	}
+</script>
+<div id='table_MemberRegistration_div'></div>

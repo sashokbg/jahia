@@ -1,0 +1,69 @@
+<%--
+	@author : Alexander Kirilov
+	@created : 14 aout 2013
+	@Id : ga
+	@description : Ajout du google analytic sur la page
+ --%>
+
+
+<%@include file="../../common/declarations.jspf" %>
+
+<%-- Google analytic --%>
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.badge > a').next().click( function(){					
+				trackEvent(['Inscription','Inscription header',document.title]);
+			});
+			$('#btnInscription').click( function(){
+				trackEvent(['Inscription','Inscription bloc devenir membre',document.title]);
+			});
+			$('#btnInscriptionPopup').click( function(){
+				trackEvent(['Inscription','Inscription veuillez vous connecter popin']);
+			});
+			$('#popMeConnecter .inscriptionLink').click( function(){
+				trackEvent(['Inscription','Inscription popin connection']);
+			});
+			$('#blockLogin .inscriptionLink').click( function(){
+				trackEvent(['Inscription','Inscription bloc identification',document.title]);
+			});
+			$('#nonConnecteLink3').click( function(){
+				trackPageview('/popin-connection');
+				trackEvent(['Connection','Me Connecter','${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);
+			});
+			$('#nonConnecteLink').click( function(){
+				trackPageview('/popin-veuillez-vous-connecter');
+			});
+			$('.forgotPwd').click( function(){
+				trackPageview('/popin-mot-de-passe-oublie');
+				trackEvent(['Connection','Oubli mot de passe']);
+			});
+			$('#logoutLink').click(function(){
+				trackEvent(['Espace membre','Deconnection']);
+			});
+			$(".liensHeaderTop a").click(function(){
+				trackEvent(['Navigation','Header',$(this).text()]);
+			});
+			$('.lienAccueil').click(function(){
+				trackEvent(['Navigation','Header','Retour accueil via logo']);
+			});
+			
+			$('.barreMenu .menuElement a').each(function(){
+				 var theme = $(this).attr('title');
+				 $(this).click(function(){
+					 trackEvent(['Navigation',theme,'${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);	 
+				 });
+			});
+			$('.lienMonActivite').click(function(){
+				trackEvent(['Espace membre','Voir mon activite']);
+			});
+			$('.lienMonProfil').click(function(){
+				trackEvent(['Espace membre','Voir mon profil']);
+			});
+			$('.badgeConnecte .blocQuestionAvatar').click(function(){
+				trackEvent(['Espace membre','Click avatar']);
+			});
+			
+		});
+	</script>
+</template:addResources>

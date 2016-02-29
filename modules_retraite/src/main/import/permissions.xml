@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<permissions jcr:primaryType="jnt:permission" xmlns:jcr="http://www.jcp.org/jcr/1.0"
+	xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jnt="http://www.jahia.org/jahia/nt/1.0">
+	<actions jcr:primaryType="jnt:permission">
+		<ciQuestion jcr:primaryType="jnt:permission">
+			<deleteQuestion jcr:primaryType="jnt:permission" />
+			<moveQuestion jcr:primaryType="jnt:permission" />
+			<editQuestion jcr:primaryType="jnt:permission" />
+		</ciQuestion>
+		<ciReply jcr:primaryType="jnt:permission">
+			<deleteReply jcr:primaryType="jnt:permission" />
+			<editReply jcr:primaryType="jnt:permission" />
+		</ciReply>
+		<ciMemberProfile jcr:primaryType="jnt:permission">
+			<editUser jcr:primaryType="jnt:permission" />
+		</ciMemberProfile>
+		<ciProfessionalProfile jcr:primaryType="jnt:permission">
+			<editUser jcr:primaryType="jnt:permission" />
+		</ciProfessionalProfile>
+		<ciProfessionalProfile jcr:primaryType="jnt:permission">
+			<editProfessional jcr:primaryType="jnt:permission" />
+		</ciProfessionalProfile>
+		<ciNewsletterSubscriptionBox jcr:primaryType="jnt:permission">
+			<extractSubscribers jcr:primaryType="jnt:permission" />
+		</ciNewsletterSubscriptionBox>
+		<ciHomeForumNews jcr:primaryType="jnt:permission">
+			<setPickableNode jcr:primaryType="jnt:permission" />
+		</ciHomeForumNews>
+		<ciMailConfig jcr:primaryType="jnt:permission">
+			<mailConfiguration jcr:primaryType="jnt:permission" />
+		</ciMailConfig>
+		<ciModeratorTools jcr:primaryType="jnt:permission">
+			<moderatorTools jcr:primaryType="jnt:permission" />
+		</ciModeratorTools>
+	</actions>
+</permissions>

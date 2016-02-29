@@ -1,0 +1,28 @@
+<%--
+	@author : el-aarko
+	@created : 31 juil. 2012
+	@Id : QuestionIncrementViewCount
+	@description : permet d'incrémenter le viewcount d'une question
+
+ --%>
+
+<%@include file="declarations.jspf" %>
+
+<template:addResources type="javascript" resources="jquery.min.js"/>
+<template:addResources type="javascript" resources="jquery.cookie.js"/>
+
+<template:addResources>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            jQuery.ajax({
+           		type : "post",
+           		url : "${url.base}${currentNode.path}.ciIncrementViewCount.do",
+           		data : "nodePath=${currentNode.path}",
+           		dataType  :"json",
+           		success : function(obj) {
+					$.cookie("View_${currentNode.identifier}", "viewed");
+           		}
+           	});
+        });
+    </script>
+</template:addResources>

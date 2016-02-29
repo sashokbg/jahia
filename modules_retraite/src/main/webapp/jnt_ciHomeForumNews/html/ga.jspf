@@ -1,0 +1,24 @@
+<%--
+	@author : kirilov
+	@created : 12 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+
+<!-- Google Analytics Callbacks -->
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.nonAnswered > .avatar, .nonAnswered .userLink a').click(function(){
+				trackEvent(['Home page','Attente reponse','Membre en attente']);
+				});
+			$('.answered > .avatar, .answered .userLink a').click(function(){
+				trackEvent(['Home page','Ont repondu','Membre avec reponse']);
+				});
+			$('.btRepondreForumHome, .lienRepondreForumHome').click(function(){
+				trackEvent(['Home page','Attente reponse','Y repondre']);
+			});
+		});
+	</script>
+</template:addResources>

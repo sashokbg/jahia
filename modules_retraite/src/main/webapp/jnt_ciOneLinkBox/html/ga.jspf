@@ -1,0 +1,21 @@
+<%--
+	@author : kirilov
+	@created : 12 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+<%@include file="../../common/declarations.jspf"%>
+
+<!-- Google Analytics Callbacks -->
+<template:addResources>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('.conteneurBlocUnique a').each(function(index){
+					$(this).click(function(){
+						trackEvent(['Question','Poser une question',document.title]);
+					});
+				});
+			});
+		</script>
+</template:addResources>

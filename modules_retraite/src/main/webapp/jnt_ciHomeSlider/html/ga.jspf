@@ -1,0 +1,72 @@
+<%--
+	@author : kirilov
+	@created : 19 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+
+<%-- Google Analytics Callbacks  --%>
+<%@include file="../../common/declarations.jspf"%>
+
+<template:addResources>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('.lireArticleCarousel').each(function(index){
+					var title = $(this).attr('data-titre');
+					
+					if(!title || title==''){
+						title = $(this).attr('href');
+					}
+					
+					$(this).click(function(){
+						if($(this).hasClass('article'))
+							trackEvent(['Carrousel','Lire article',title]);
+						
+						if($(this).hasClass('thematic'))
+							trackEvent(['Carrousel','Lire la suite',title]);
+					});
+				});
+				
+				$('#carrousel a[target="_blank"]').click( function(){
+					var arr = new Array();
+					var action = $(this).attr('data-action');
+					var href = $(this).attr('href');
+					if(action) {
+						arr.push('Carrousel');
+						arr.push(action);
+						var label = $(this).attr('data-label');
+						if(label)
+							arr.push(label);
+					} else {
+						arr.push('Liens de sortie');
+						arr.push('Go to '+ href);
+						/* 
+							@Oceane
+							Je ne comprends pas.
+							Si un lien de sortie est dans le carrousel à ce
+							moment là est-ce qu'on peut faire :
+								_gaq.push(['_trackEvent','Liens de sortie','Go to [Destination url]','carrousel']);
+						*/
+						// arr.push(document.title);
+						arr.push('Carrousel');
+					}
+					trackEvent(arr);
+				});
+				
+				$('.lienVideo').each(function(index){
+					//var title = $(this).attr('data-titre');
+					
+					$(this).click(function(){
+						trackPageview('/popin-video-youtube');
+						//trackEvent(['Carrousel','Lire video',title]);
+					});
+				});
+				
+				$('.bx-pager a').click(function(){
+					trackEvent(['Carrousel','Defiler carrousel']);
+				});
+				
+			});
+		</script>
+</template:addResources>

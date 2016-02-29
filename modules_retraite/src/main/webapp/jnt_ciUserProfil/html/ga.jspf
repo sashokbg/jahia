@@ -1,0 +1,86 @@
+<%--
+	@author : kirilov
+	@created : 21 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+<%-- Google Analytics Callbacks --%>
+
+<template:addResources>
+	<script type="text/javascript">
+		//un tableau pour les évennements à comptabiliser 
+		//UNIQUEMENT si le changement est bien validé
+		var events = new Array();
+		var dic = {
+			"true" : "envoyer mail",
+			"false" : "ne plus envoyer mail"
+		};
+		$(document).ready(function() {
+					$('.btAnnuleModifMDP').click(function() {
+						trackEvent([ 'Espace membre', 'Annuler modification Mdp' ]);
+					});
+					$('.btModifMDP').click(function() {
+						trackEvent([ 'Espace membre', 'Modifier Mdp' ]);
+					});
+
+					$('#file-uploader-button').click(function() {
+						events.push([ 'Espace membre', 'Telecharger photo' ]);
+					});
+
+					// ----- Eventements à comptabiliser uniquement si on valide ---------
+
+					$('#acceptNotification').change(function() {
+						var selected = $('#acceptNotification').is(':checked');
+						events.push([ 'Espace membre', 'Mailing alerte', dic[selected.toString()]]);
+					});
+
+					$('#acceptNewsletter').change(function() {
+						var selected = $('#acceptNewsletter').is(':checked');
+						events.push([ 'Espace membre', 'Mailing Newsletter', dic[selected.toString()]]);
+					});
+
+					$('#acceptNewsletterGroup').change(function() {
+						var selected = $('#acceptNewsletterGroup').is(':checked');
+						events.push([ 'Espace membre', 'Mailing Offers', dic[selected.toString()]]);
+					});
+
+					$('#selectTheme').change(function() {
+						var selected = $('#selectTheme :selected').text();
+						events.push([ 'Espace membre', 'Choix theme expert', selected]);
+					});
+
+					$('#selectThematics').change(function() {
+						var selected = $('#selectThematics :selected').text();
+						events.push([ 'Espace membre', 'Choix thematique expert', selected ]);
+					});
+
+					$('#selectRubrics').change(function() {
+						var selected = $('#selectRubrics :selected').text();
+						events.push([ 'Espace membre', 'Choix thematique expert', selected ]);
+					});
+
+					$('input:[name=userType]').change(function() {
+						var selected = $('input:[name=userType]:checked').next().text();
+						for ( var i = 0; i < events.length; i++) {
+							if (events[i][2] == selected) {
+								events.splice(i, 1);
+								return;
+							}
+						}
+						events.push([ 'Espace membre', 'Modifier statut', selected ]);
+					});
+					
+					$('input:[name=choixActivite]').change(function() {
+						var selected = $(this).next().text();
+						for ( var i = 0; i < events.length; i++) {
+							if (events[i][2] == selected) {
+								events.splice(i, 1);
+								return;
+							}
+						}
+						events.push([ 'Espace membre', 'Modifier situation pro', selected ]);
+					});
+				});
+	</script>
+</template:addResources>

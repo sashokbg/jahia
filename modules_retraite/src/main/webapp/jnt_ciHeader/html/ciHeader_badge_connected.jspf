@@ -1,0 +1,56 @@
+<%--
+	@author : s Pichard
+	@Id : US-509 
+	@description : Badge qui apparait dans le header si connect� 
+				   il affiche les infos du profil
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<c:url var="logoutUrl" value="${url.logout}"/>
+
+<jcr:node var="userNode" uuid="${currentUser.identifier}"/>
+<%@include file="../../common/ciSetUserInfo.jspf" %>
+
+<div class="badge badgeConnecte">
+	<a class="blocQuestionAvatar" href="${publicProfileUrl}" title="Acc&eacute;der au profil de ${pseudo}" >
+		<img alt="Photo Avatar" src="${avatarSrc40}" width="40px" height="40px"/>
+	</a>
+	<span class="bold"><fmt:message key="memberBox.label.hello"/>&nbsp;</span>
+	<span class="bold nomPrenomBadge">
+		<c:if test="${empty firstname || empty lastname}">
+			${pseudo}&nbsp;
+			<c:set value="false" var="showPseudo" />
+		</c:if>
+		<c:if test="${not empty firstname && not empty lastname}">
+			${firstname}&nbsp;${lastname}
+			<c:set value="true" var="showPseudo" />
+		</c:if>
+	</span>					
+	<div class="pseudoBadge">
+		<c:if test="${showPseudo}">
+			(${pseudo})
+		</c:if>
+		<c:if test="${jcr:hasPermission(currentNode, 'moderatorTools')}">
+			<a style="float: right; text-decoration: underline; color: #009FCC;
+					padding-right: 5px;"
+				href="${renderContext.site.properties['moderatorToolsPageLink'].node.url}">Outils
+				Mod&eacute;rateur</a>
+		</c:if>
+	</div>
+	<div class="liensBadge">
+		<a class="lienMonActivite" title="Acc&eacute;der &agrave; mon activit&eacute;" href="${myActivityUrl}"><fmt:message key="memberBox.label.activity"/></a>
+		<a class="lienMonProfil" title="Acc&eacute;der &agrave; mon profil" href="${myProfileUrl}"><fmt:message key="memberBox.label.profil"/></a>
+		<a class="lienLogout" id="logoutLink" title="Deconnexion" href="http://${renderContext.site.serverName}/${logoutUrl}"><fmt:message key="memberBox.label.logout"/></a>
+		<div class="breaker"></div>
+	</div>
+	
+	<%-- bloc avec les questions posees et les questions en attente de reponse --%>
+	
+	<%-- En construction : ne pas commiter cette jspf tout de suite !!!!   --%>
+<%-- 	<%@include file="ciHeader_badge_connected_questions.jspf" %>  --%>
+		
+</div>		
+
+
+

@@ -1,0 +1,41 @@
+<template:addResources type="javascript" resources="cnil.0.4.2.js" />
+<template:addResources type="css" resources="cnil/cnil.css" />
+
+<template:addResources>
+<script>
+	$(document).ready( function() {
+		$('.page').cnilify(
+				{
+					gaAccountID : '${gaAccountID}',
+					explicitConsentBinders : [ '#btn-accept' ],
+					discardBinders : [ '#btn-discard' ],
+					consentTemplate: '<p>Ce site utilise Google Analytics. En continuant &agrave; naviguer, vous nous autorisez &agrave; d&eacute;poser des cookies &agrave; des fins de mesure d\'audience. Pour s\'opposer &agrave; ce d&eacute;pot, vous pouvez cliquer sur ce lien pour <a href=\"\/conformitecnil\" title=\"En savoir plus sur la loi cookies\">en savoir plus<\/a>\n<\/p>\n',
+					optOutTemplate: '<p>Vous vous &ecirc;tes oppos&eacute; au d&eacute;p&ocirc;t de cookies de mesures d\'audience dans votre navigateur.<\/p>\n',
+					optInTemplate: '<p>Vous acceptez de nouveau les cookies de mesure d\'audience<\/p>\n',
+					onImplicitConsent : function() {
+						_gaq.push([ '_trackEvent', 'Loi Cookie',
+								'AUTORISATION',
+								'Consentement implicite par navigation' ]);
+					},
+					onConsent : function(event) {
+						var id = event.currentTarget.id;
+						if (id === 'btn-accept') {
+							var trackAccept = function() {
+								_gaq.push([ '_trackEvent', 'Loi Cookie',
+										'AUTORISATION',
+										'Bouton \'Accepter\'' ]);
+							};
+							setTimeout(trackAccept, 400);
+						} else if (id === 'close-cnil-banner') {
+							var trackAccept = function() {
+								_gaq.push([ '_trackEvent', 'Loi Cookie',
+										'AUTORISATION',
+										'Fermeture banni\u00E8re' ]);
+							};
+							setTimeout(trackAccept, 400);
+						}
+					}
+				});
+	});
+</script>
+</template:addResources>

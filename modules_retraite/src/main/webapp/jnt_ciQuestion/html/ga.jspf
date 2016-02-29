@@ -1,0 +1,69 @@
+<%--
+	@author : Sylvain Pichard
+	@created : 12 aout 2013
+	@Id : ga
+	@description : Ajout du google analytic sur la page
+ --%>
+
+<%-- remarque : ce fichier est aussi utilisé par ciReply.jsp  --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<%-- Google analytic --%>
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.btRepondre').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Repondre forum','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});	
+			$('.bulleRepondre a').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Repondre forum','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});		
+			$('.btEnvoyer').each(function (index){
+				$(this).click( function(){
+					var text = trim($("#answerBody").val());
+					if (!(text == "Je r\u00E9ponds" || text == "" || text == "Veuillez saisir une r\u00E9ponse")) {
+						trackEvent(['Forum','Envoyer reponse','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+					}					
+				});
+			});
+			$('.btPlusUn').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Voter','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});
+			$('.pagination span').click(function(){				
+					trackEvent(['Forum','Derouler reponses','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+			});			
+			$('.btPrevisualiserMaReponse').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Previsualiser reponse','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});	
+			$('.listeVoirLes').change(function(){
+				trackEvent(['Forum', $(this).children('option:selected').text(),'${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+			});	
+			$('.questionContainer .blocQuestionAvatar').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Forum clic membre','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});	
+			$('.questionContainer .pseudo').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Forum','Forum clic membre','${functions:escapeJavaScript(cia:getThematicParent(currentNode).displayableName)}']);
+				});
+			});	
+			$('.signalerAbus[href="#popRecommandation"]').each(function (index){
+				$(this).click( function(){
+					trackEvent(['Recommandation','Recommander reponse','${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);
+					trackPageview('/popin-recommandation-ami');
+				});
+			});	
+
+		});
+	</script>
+</template:addResources>

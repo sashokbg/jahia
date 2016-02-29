@@ -1,0 +1,162 @@
+<%--
+	@author : baroin
+	@created : 13 decembre 2012
+	@Id : idDeLaPage
+	@description : envoyer une recommandation à un ami
+
+ --%>
+
+<%@include file="declarations.jspf"%>
+
+<template:addResources type="javascript" resources="jquery.fancybox-1.3.4.pack.js"/>
+
+
+<%-- Le message à envoyer vers Google Analytics--%>
+<c:choose>
+	<c:when test="${currentNode.primaryNodeTypeName == 'jnt:ciArticleBody' }">
+		<c:set var="gaMessage" value="Envoyer recommandation article"></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="gaMessage" value="Envoyer recommandation reponse"></c:set>
+	</c:otherwise>
+</c:choose>
+
+
+<%-- Script de validation et envoi une recommandation à un ami--%>
+
+<%-- <c:if test="${connected }"> --%>
+<script type="text/javascript">
+var path1 = null;
+var url1 = null;
+var type1 = null;
+var uuid1 = null;
+	
+jQuery(document).ready(function(){
+		
+$("#friendFancyboxLink").fancybox({
+		hideOnOverlayClick: false,
+		padding: 0,
+		overlayColor: '#FFF'
+});	
+	
+	var recommandMessage1 = function() {
+		if ($("#senderEmail").val()==""){
+			$(".messageSujetVide").removeClass("hide");
+			$("#senderEmail").addClass("messageErreur");
+		}
+		else{
+			$(".messageSujetVide").addClass("hide");
+			$("#senderEmail").removeClass("messageErreur");
+		}
+		if ($("#senderName").val()==""){
+			$(".messageMessageVide").removeClass("hide");
+			$("#senderName").addClass("messageErreur");
+		}
+		else{
+			$(".messageMessageVide").addClass("hide");
+			$("#senderName").removeClass("messageErreur");
+		}
+		if($("#emailFriend").val()==""){
+			$(".messageEmailInvalide2").removeClass("hide");
+			$("#emailFriend").addClass("messageErreur");
+		}
+		else{
+			$(".messageEmailInvalide2").addClass("hide");
+			$("#emailFriend").removeClass("messageErreur");
+			
+		}
+		if ( ($("#emailFriend").val()!="") && ($("#senderName").val()!="") && $("#senderEmail").val()!=""){
+			var queryString = "&path=" + path1 + "&url=" + url1 + "&type=" + type1 + "&senderName=" + $("#senderName").val() +
+							  "&senderEmail=" + $("#senderEmail").val() + "&emailFriend=" + $("#emailFriend").val();
+			jQuery.ajax({
+				type : "post",
+				url : "${url.base}${currentNode.path}.ciSendFriendlyMessageUsersAction.do",
+				data : queryString,
+				dataType  :"json",
+				success : function(data) {
+					/*var obj = jQuery.parseJSON(data);
+					if (obj == null)
+					return;*/
+					//if (obj.isFlag) {
+						trackEvent(['Recommandation','${gaMessage}','${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);
+						$(".beforeSend").hide();
+						$(".afterSend").show();
+						$(".confirmationPseudo").html($("#senderName").val());
+					/*} else {
+						alert("Erreur lors de l'enregistrement.");
+					}*/
+				}
+			}); 
+		}
+	};
+	$("#recommandMessage").click(recommandMessage1);
+	
+});
+	//FuncyBox pour les liens de recommandation :
+$("#friendFancyboxLink").fancybox({
+			hideOnOverlayClick: false,
+			padding: 0,
+			overlayColor: '#FFF'
+});	
+	
+var ciSendFriendMessage = function(path,url,type,uuid) {
+		path1 = path;
+		url1 = url;
+		type1 = type;
+		uuid1 = uuid;
+	    $(".beforeSend").show();
+		$(".afterSend").hide();
+		$("#senderEmail").val("");
+		$("#senderName").val("");
+		$("#emailFriend").val("");
+		$(".messageEmail1Vide").addClass("hide");
+		$(".messagePrenomVide").addClass("hide");
+		$(".messageEmail2Vide").addClass("hide");
+		$(".messageEmail3Vide").addClass("hide");
+		$(".messageEmail4Vide").addClass("hide");		
+		$("#senderEmail").removeClass("messageErreur");
+		$("#senderName").removeClass("messageErreur");
+		$("#emailFriend").removeClass("messageErreur");
+		$("#friendFancyboxLink").click();
+		return true;
+};
+</script>
+	<%-- Veuillez commenter les blocs importants --%>
+	
+<div id="blocPopRecommande">
+			<div id="popinRecommande" class="degrade">
+					<form action="" id="ciSendFriendlyMessageUsersForm" name="ciSendFriendlyMessageUsersForm">
+						<h3 class="band">Recommander à un ami</h3>
+						<!--1er etape-->
+						<div class="contenuPopEnvoiMessage beforeSend" id="flagFirstStep">
+							<span>Votre adresse email: </span>						
+							<input name="senderEmail"id ="senderEmail" type="text" class="champFormInscription sujetMessageMembre" value="" />							
+							<span class="messageSujetVide hide"><fmt:message key='ciSendFriendlyMessageUsers.userMailError1'/></span>
+							<span class="messageVisibleVide hide"><fmt:message key='ciSendFriendlyMessageUsers.userMailError2'/></span>
+							
+							<span>Votre prénom:</span>							
+							<input name="senderName"id="senderName" type="text" class="champFormInscription sujetMessageMembre" value="" maxlength="20" />							
+							<span class="messageMessageVide hide"><fmt:message key='ciSendFriendlyMessageUsers.messagePrenomVide'/></span>
+						
+							<span>Adresse email de votre ami:</span>
+							<input name="emailFriend"id="emailFriend" type="text" class="champFormInscription sujetMessageMembre" value="" />							
+							<span class="messageEmailInvalide2 hide"><fmt:message key='ciSendFriendlyMessageUsers.userMailError2'/></span>
+							<span class="messageEmailInvalide hide"><fmt:message key='ciSendFriendlyMessageUsers.userMailError2'/></span>
+														
+							<input id="recommandMessage" type="button" value="" class="btEnvoyerMessageMembre" /> 
+							<div class="clear"></div>
+						</div>
+				<!--fin 1er etape-->
+				<!--2eme etape-->
+				<div class="contenuPopEnvoiMessage afterSend" id="flagSecondStep" style="display:none;">
+					<span><fmt:message key='ciSendFriendlyMessageUsers.confirmation'/></span>
+					<input type="button" onclick="$.fancybox.close();" class="btRetourPagePrecedente">
+					<div class="clear"></div>
+				</div>
+				<!--fin 2eme etape-->
+				</form>
+		</div>
+</div>
+	
+<%-- contenu html --%>
+	<a id="friendFancyboxLink" href="#popinRecommande" style="display:none;"></a>

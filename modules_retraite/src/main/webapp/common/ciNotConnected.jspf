@@ -1,0 +1,41 @@
+<%--
+	@author : S.Pichard
+	@Id : box de message si non connecte
+	@description : En tant qu'Internaute, je veux participer mais je ne suis pas connecté / US-102
+ --%>
+
+<%@ include file="declarations.jspf"%>
+<c:set var="protocol" scope="request" value="${empty renderContext.site.properties['connectionProtocol'].string ? 'http' :renderContext.site.properties['connectionProtocol'].string}" />
+<c:url var="loginUrl" scope="request" value="${url.base}${currentNode.path}.ciLogin.do" />
+
+<%@ include file="ciNotConnected.js.jspf" %>
+
+<%-- contenu html --%>		
+ <div id="blocPopNonConnecte">
+	<div id="popNonConnecte">
+		<div class="box_pop_up_haut">
+			<div class="box_titre">
+				<fmt:message key="ciNotConnected.title"/>
+			</div>
+			<form id="ciLoginForm2" action="${url.base}${currentNode.path}.ciLogin.do">
+				<input type="text" 		id="cb_username2" name="username2" class="emailBackground" value="">
+				<input type="password" 	id="cb_password2" name="password2" class="passwordBackground" value="">
+				<a class="forgotPwd" href="#${isMaintenance ? 'popMaintenance' : 'popMdpOublie'}" title="Mot de passe oubli&eacute;">
+					<fmt:message key="ciNotConnected.forgotPw"/>
+				</a>
+				<input id="logonLink2" class="btConnection" type="button" title="Me Connecter" value="">
+			</form>
+			<div id="loginFailError2" class="erreurFormulaireConnexion">				
+			</div>
+		</div>
+		<div class="box_pop_up_bas">
+			<span><fmt:message key="ciNotConnected.notMemberYet"/></span>
+			<a href="${renderContext.site.properties['inscriptionPageLink'].node.url}" target="_self" title="M'inscrire">
+				<span id="btnInscriptionPopup" class="inscription"></span>
+			</a>		
+		</div>
+	</div>
+</div>			
+
+<%-- contenu html --%>
+<a id="nonConnecteLink" href="#popNonConnecte" style="display:none;"></a>

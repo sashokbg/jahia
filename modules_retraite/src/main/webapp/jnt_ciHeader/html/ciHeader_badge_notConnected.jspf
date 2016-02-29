@@ -1,0 +1,42 @@
+ <%--
+	@author : S.Pichard
+	@Id : US-509
+	@description : Badge qui apparait dans le header si non connecté 
+					il invite à se connecter ou à s'incrire 
+ --%>
+
+<%@ include file="ciHeader_badge_notConnected.js.jspf" %>
+
+ <%-- Fancy box --%>
+<div id="popBlockLogin" style="width:320px;">
+	<div id="popMeConnecter">
+		<h3 class="band">M'identifier</h3>
+		<div id="conteneurLogin3">
+			<div id="frmLogin3">
+				<form id="ciLoginForm3" action="${url.base}${currentNode.path}.ciLogin.do">
+					<input class="champSaisie emailBackground" id="cb_username3" type="text" value="" />
+					<input class="champSaisie passwordBackground" id="cb_password3" type="password" value="" />
+					<div>
+						<a href="#${isMaintenance ? 'popMaintenance' : 'popMdpOublie'}" class="forgotPwd" title="Mot de passe oubli&eacute;">Mot de passe oublié ?</a>
+						<br/><br/>
+						<a href="${renderContext.site.properties['inscriptionPageLink'].node.url}" 
+							class="inscriptionLink" title="M'inscrire">
+							<fmt:message key="jnt_ciConnectionBox.inscription.label"/>
+						</a>
+						<div class="clear"></div>
+						<input id="logonLink3" class="btConnection" type="button" value="" title="Me Connecter"/>
+						<div class="clear"></div>													
+					</div>
+					<div id="loginFailError3" class="messageId-KO"></div>	
+				</form>	
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="badge">
+	<%-- Lien se connecter --%>
+	<a id="nonConnecteLink3" onclick="openConnectionBox3();" title="Me Connecter" class="nonConnecte headMeConnecter" href="#popMeConnecter"><!-- vide --></a>
+	<%-- Lien s'incrire --%>
+	<a href="${renderContext.site.properties['inscriptionPageLink'].node.url}" title="M'inscrire" class="nonConnecte headMinscrire"><!-- vide --></a>
+</div>

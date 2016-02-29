@@ -1,0 +1,33 @@
+<%--
+	@author : kirilov
+	@created : 20 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+<%-- Google Analytics Callbacks --%>
+<%@include file="../../common/declarations.jspf"%>
+
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#lienRecommandeArticleBody').click(function(){
+				trackPageview('/popin-recommandation-ami');
+				trackEvent(['Recommandation','Recommander article','${functions:escapeJavaScript(cia:pageTitle(renderContext.mainResource.node))}']);
+			});
+
+			$('#conteneurArticle a[target="_blank"], .boxLireAussi a[target="_blank"]').each(function (index){
+				$(this).click( function(){	
+					trackEvent(['Liens de sortie','Go to ' + $(this).attr('href'), document.title]);
+				});
+			}); 
+
+			$('.publiRedactionnel a[target="_blank"]').each(function (index){
+				$(this).click( function(){	
+					trackEvent(['Liens de sortie','Go to ' + $(this).attr('href'),'Publireportage - ' + document.title]);
+				});
+			}); 
+						
+		});
+	</script>
+</template:addResources>

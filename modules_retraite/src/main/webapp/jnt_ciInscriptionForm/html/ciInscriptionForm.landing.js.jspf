@@ -1,0 +1,211 @@
+<%--
+	@author : el-aarko
+	@created : 20 juil. 2012
+	@Id : form inscription validator
+	@description : script javascript qui permet de valider le formulaire
+
+ --%>
+<%@ include file="../../common/declarations.jspf"%>
+<%@include file="ga.jspf"%> 
+
+<template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js" />
+<template:addResources type="javascript" resources="jCrop/jquery.Jcrop.ag2r.js" />
+<template:addResources type="javascript" resources="jquery.maskedinput-1.3.min.js" />
+<template:addResources type="javascript" resources="jquery.fancybox-1.3.4.pack.js"/>
+ 
+<template:addResources>
+
+<fmt:message var="disponible" key='registration.error.disponible' />
+<fmt:message var="indisponible" key='registration.error.indisponible' />
+
+<script type="text/javascript">
+	function alphaNumOnly(e) {
+		var key;
+		var keychar;
+	
+		if (window.event)
+		   key = window.event.keyCode;
+		else if (e)
+		   key = e.which;
+		else
+		   return true;
+		keychar = String.fromCharCode(key);
+		keychar = keychar.toLowerCase();
+	
+		// control keys
+		if ((key==null) || (key==0) || (key==8) || 
+		    (key==9) || (key==13) || (key==27) )
+		   return true;
+		
+		// alphas and numbers
+		else if ((("abcdefghijklmnopqrstuvwxyz0123456789").indexOf(keychar) > -1))
+		   return true;
+		else
+		   return false;
+	
+	}
+	function isNumber(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+	jQuery(document).ready(function() {
+		$("#lienPopLoding").fancybox({
+			padding: 0,			
+			overlayColor: '#FFF',
+			centerOnScroll : true,
+			modal: true,
+		});
+		
+		$("#radRetJunior").click(function(){
+			$(".frNode").hide();
+			$(".rjNode").show();
+		});
+		
+		$("#radFuturRetraite").click(function(){
+			$(".rjNode").hide();
+			$(".frNode").show();
+		});
+		$("#radFuturRetraite").click();
+		
+		/*
+		* Validation du formlaire d'inscription (Jquery Validator)
+		*/
+		$(".messageGenerique").hide();
+       	
+       	var inscriptionFormValidator = $("#ciInscriptionForm").validate({
+       		onkeyup: false,
+       		onblur : true,
+       		errorElement: "span",
+        	errorClass: "messageErreur",
+        	errorContainer: $(".messageGenerique"),
+    		errorPlacement: function(error, element) {
+				var errorFor = error.attr("for");
+				if (errorFor == "cguAccepted") {
+					error.insertBefore($("#cguMessage"));
+				} else {
+					error.insertAfter(element);
+				}
+			},
+    		rules : {
+    			gender : "required",
+    			pseudoname : {
+    				required : true,
+    				minlength : 4,
+    				maxlength : 20
+    			},
+    			emailAddress : {
+    				required : true,
+    				email : true
+    			},
+    			password : {
+    				required : true,
+    				minlength : 4,
+    				maxlength : 20
+    			},
+    			cguAccepted : "required"
+    		},
+    		messages: {
+    			gender : "<fmt:message key='registration.error.gender.required'/>",
+    			pseudoname : {
+    				required : "<fmt:message key='registration.error.pseudo.required'/>",
+    				minlength : "<fmt:message key='registration.error.pseudo.length'/>",
+    				maxlength : "<fmt:message key='registration.error.pseudo.length'/>"
+    			},
+    			emailAddress : "<fmt:message key='registration.error.mail.invalid.simple'/>",
+    			password : {
+    				required : "<fmt:message key='registration.error.password.required'/>",
+    				minlength : "<fmt:message key='registration.error.password.length'/>",
+    				maxlength : "<fmt:message key='registration.error.password.length'/>"
+    			},
+    			cguAccepted : "<fmt:message key='registration.error.cg.required' />"
+    		}
+   		});
+       	
+       	/*
+       	* Validation de l'unicite du pseudoname
+       	*/
+       	var availablePseudoname = false;
+    	var validatePseudonameUnicity = function() {
+    		if (inscriptionFormValidator.check(inscriptionFormValidator.currentForm.pseudoname)) {
+    			jQuery.ajax({
+          			type : "post",
+          			url : "${url.base}${currentNode.path}.ciCheckUserUnicityAction.do",
+          			data : "pseudoname="+$("#pseudoname").val(),
+          			dataType :"json",
+          			success : function(response) {
+          				availablePseudoname = response.available;
+          				if (response.available) {
+          					$("#pseudonameValid").addClass("pseudoValideMessage").html("${disponible}").show();
+          				} else {
+          					$("#pseudonameValid").removeClass("pseudoValideMessage").html("${indisponible}").show();
+          				}
+          			}
+          		});
+    		} else {
+    			$("#pseudonameValid").hide();
+    		}
+    	};
+    	$("#pseudoname").blur(validatePseudonameUnicity);
+    	
+    	/*
+       	* Validation de l'unicite de l'adresse e-mail
+       	*/
+       	var availableEmailAddress = false;
+       	var validateEmailAddressUnicity = function() {
+    		if (inscriptionFormValidator.check(inscriptionFormValidator.currentForm.emailAddress)) {
+    			jQuery.ajax({
+          			type : "post",
+          			url : "${url.base}${currentNode.path}.ciCheckUserUnicityAction.do",
+          			data : "emailAddress="+$("#emailAddress").val(),
+          			dataType :"json",
+          			success : function(response) {
+          				availableEmailAddress = response.available;
+          				if (response.available) {
+          					$("#emailAddressValid").addClass("pseudoValideMessage").html("${disponible}").show();
+          				} else {
+          					$("#emailAddressValid").removeClass("pseudoValideMessage").html("${indisponible}").show();
+          				}
+          			}
+          		});
+    		} else {
+    			$("#emailAddressValid").hide();
+    		}
+    	};
+    	$("#emailAddress").blur(validateEmailAddressUnicity);
+    	
+    	/*
+    	* Envoyer le formulaire si tout est OK (validator + pseudo dispo + mail dispo)
+    	*/
+    	$("#ciInscriptionForm").submit(function() {
+    		if (inscriptionFormValidator.checkForm() && availablePseudoname && availableEmailAddress) {
+    			sendGoogleAnalytics(this);
+    			//show loading popup
+    			$('#lienPopLoding').click();
+    			return true;
+    		} else {
+    			$(".messageGenerique").show();
+    			window.scrollTo($(".messageGenerique").offset().left,$(".messageGenerique").offset().top);
+    			validatePseudonameUnicity();
+    			validateEmailAddressUnicity();
+    			return false;
+    		}
+    	});
+    	$("#submitButton").click(function() {
+    		$("#ciInscriptionForm").submit();
+       	});
+    	
+    	
+    	var errors = "${error}";
+    	if (errors != "") {
+    		$(".messageGenerique").html("Votre pseudo est d&eacute;ja pris, veuillez resaisir vos informations").show();
+			window.scrollTo($(".messageGenerique").offset().left,$(".messageGenerique").offset().top);
+    	}
+    	
+    	$("#pseudoname").bind('paste', function (e) {
+			e.preventDefault();
+		});
+	});
+	
+</script>
+
+</template:addResources>
+<%session.removeAttribute("error");%>

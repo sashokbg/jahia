@@ -1,0 +1,158 @@
+<%--
+	@author : lakreb
+	@created : 25 janv. 2013
+	@Id : idDeLaPage
+	@description : graphique de repartition des membres par regions
+
+ --%>
+
+<%@include file="../../../common/declarations.jspf"%>
+
+<script type='text/javascript'>
+	var regionData = new google.visualization.DataTable();
+	var chart;
+	var waitForPopulate = true;
+
+	var loadDataLog = {};
+
+	var options = {
+		resolution : 'provinces',
+		region : 'FR',
+		enableRegionInteractivity : true,
+		colorAxis : {
+			colors : [ '#009FCC', '#019934' ]
+		}
+	};
+
+	google.setOnLoadCallback(function() {
+		drawRegionGeo('chart_Region_div', options);
+	});
+
+	jQuery.ajax({
+				type : "post",
+				url : "${url.base}${currentNode.path}.toolsStatsJSON.do",
+				data : "typeStat=RegionExtractor",
+				dataType : "json",
+				timeout  : 30000,
+				success : function(obj) {
+					if (obj == null)
+						return;
+					if (obj.rows) {
+						regionData.addColumn('string', 'R\u00E9gion');
+						regionData.addColumn('number', 'Nombres');
+
+						var rows = obj.rows;
+						for ( var i in rows) {
+							var jsonRow = rows[i];
+							var row = [];
+							for ( var j in jsonRow) {
+								row[j] = jsonRow[j];
+							}
+							regionData.addRow(row);
+							debug = true;
+							log("- geo chart - repartition par regions : "
+									+ row);
+							debug = false;
+						}
+						waitForPopulate = false;
+					}
+				},
+				beforeSend : function() {
+					log("- geo chart - asynchroneous call and population of regionData table");
+				},
+				error : function() {
+					throw "server not responding for geo chart region data !!";
+				}
+			});
+
+	function drawRegionGeo(id, opts) {
+		if(!loadDataLog[id])
+			loadDataLog[id] = 0;
+		if (waitForPopulate) {
+			if (loadDataLog[id] < 30) {
+				log("- geo chart - reporting " + id
+						+ " zone while loading data...");
+				loadDataLog[id] += 1;
+				setTimeout(function() {
+					drawRegionGeo(id, opts)
+				}, 1000);
+			} else {
+				throw "too many wait for data load";
+			}
+			return;
+		}
+		log("- geo chart - drawing " + id + " zone");
+		chart = new google.visualization.GeoChart(document.getElementById(id));
+		chart.draw(regionData, opts);
+	}
+</script>
+
+<br />
+<br />
+<h3>
+	<fmt:message key="ciToolsStat.regionExtractor" />
+	&nbsp;&nbsp;&nbsp;&rarr;
+</h3>
+<a class="exportIcon"
+	href="${url.base}${currentNode.path}.toolsStatsExcel.do?extractor=RegionExtractor"
+	title="Exporter la r&eacute;partition des membres par r&eacute;gions et DOM-TOM"></a>
+<br />
+<br />
+<ul id="mapRegion"
+	style="float: left; margin-left: 1px; display: list-item;">
+	<li style="width: auto;"><div id='chart_Region_div'
+			style='height: 425px;'></div></li>
+	<%-- DOM --%>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="GF" />
+		<jsp:param name="label" value="Guyane (française)" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="GP" />
+		<jsp:param name="label" value="Guadeloupe" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="MQ" />
+		<jsp:param name="label" value="Martinique" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="RE" />
+		<jsp:param name="label" value="La R&eacute;union" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="YT" />
+		<jsp:param name="label" value="Mayotte" />
+	</jsp:include>
+	<%-- TOM --%>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="NC" />
+		<jsp:param name="label" value="Nouvelle Cal&eacute;donie" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="PF" />
+		<jsp:param name="label" value="Polyn&eacute;sie française" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="BL" />
+		<jsp:param name="label" value="Saint-Barth&eacute;l&eacute;my" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="MF" />
+		<jsp:param name="label" value="Saint-Martin" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="PM" />
+		<jsp:param name="label" value="Saint-Pierre-et-Miquelon" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="TF" />
+		<jsp:param name="label" value="Terres australes françaises" />
+	</jsp:include>
+	<jsp:include page="maps/domTom.jsp">
+		<jsp:param name="code" value="WF" />
+		<jsp:param name="label" value="Wallis-et-Futuna" />
+	</jsp:include>
+</ul>
+<br />
+<br />
+<div class="breaker"></div>

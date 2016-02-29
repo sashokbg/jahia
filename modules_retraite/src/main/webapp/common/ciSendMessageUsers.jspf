@@ -1,0 +1,154 @@
+<%--
+	@author : baroin
+	@created : 28 novembre 2012
+	@Id : idDeLaPage
+	@description : envoyer un message à un membre
+
+ --%>
+
+<%@include file="declarations.jspf"%>
+
+<template:addResources type="javascript" resources="jquery.fancybox-1.3.4.pack.js"/>
+<%-- Script de validation et envoi d'un message à un membre--%>
+<c:set var="requestVar" value="<%=request.getQueryString()%>"/>
+
+<c:if test="${connected }">
+	<script type="text/javascript">
+	var pseudo1 = null;
+	var acceptVisibleMail= null;
+	jQuery(document).ready(function(){
+		
+	$("#messageFancyboxLink").fancybox({
+		hideOnOverlayClick: false,
+		padding: 0,
+		overlayColor: '#FFF'
+	});	
+	
+	var memberMessage1 =function() {
+		if ($("#subject").val()==""){
+			$(".messageSujetVide").removeClass("hide");
+			$("#subject").addClass("messageErreur");
+		}
+		else{
+			$(".messageSujetVide").addClass("hide");
+			$("#subject").removeClass("messageErreur");
+		}
+		if ($("#body").val()==""){
+			$(".messageMessageVide").removeClass("hide");
+			$("#body").addClass("messageErreur");
+		}
+		else{
+			$(".messageMessageVide").addClass("hide");
+			$("#body").removeClass("messageErreur");
+		}
+		if($("#acceptVisibleMail")[0].checked){
+			$(".messageVisibleVide").addClass("hide");
+		}
+		else{
+			$(".messageVisibleVide").removeClass("hide");
+			
+		}
+		if ( ($("#subject").val()!="") && ($("#body").val()!="") && $("#acceptVisibleMail")[0].checked){
+			var queryString = "pseudo=" + pseudo1+"&subject=" + $("#subject").val()
+			+"&body=" + $("#body").val();
+			jQuery.ajax({
+				type : "post",
+				url : "${url.base}${currentNode.path}.ciSendUserMessageAction.do",
+				data : queryString,
+				//dataType  :"json",
+				success : function(data) {
+					var obj = jQuery.parseJSON(data);
+					if (obj == null)
+						return;
+					if (obj.isFlag) {
+						$(".beforeSend").hide();
+						$(".afterSend").show();
+						$(".confirmationPseudo").html(pseudo1);
+					} else {
+						alert("Erreur lors de l'enregistrement.");
+					}
+				}
+			}); 
+			$(".confirmationPseudo").html(pseudo1);
+	 		$(".beforeSend").hide();
+	 		$("#acceptVisibleMail")[0].checked=false;
+	 		$(".afterSend").show();
+	 		
+	 		trackEvent(['Les membres','Envoyer message membre']);
+		}
+	};
+		$("#memberMessage").click(memberMessage1);
+	
+	});
+	//FuncyBox pour les liens de signaler un abus :
+	$("#messageFancyboxLink").fancybox({
+			hideOnOverlayClick: false,
+			padding: 0,
+			overlayColor: '#FFF'
+	});	
+	
+	var ciSendMessageUsers = function(pseudo) {
+		pseudo1 = pseudo;
+	    $(".beforeSend").show();
+		$(".afterSend").hide();
+		$("#subject").val("");
+		$("#body").val("");
+		$(".messageSujetVide").addClass("hide");
+		$(".messageMessageVide").addClass("hide");
+		$(".messageVisibleVide").addClass("hide");
+		$("#body").removeClass("messageErreur");
+		$("#subject").removeClass("messageErreur");
+		$("#messageFancyboxLink").click();
+		return true;
+	};
+	</script>
+	<%-- Veuillez commenter les blocs importants --%>
+	
+	
+	
+	<div id="blocPopEnvoiMessage">
+		<div id="popEnvoiMessage" class="degrade">
+			<form action="" id="ciSendMessageUsersForm" name="ciSendMessageUsersForm">
+				<h3 class="band"><fmt:message key='ciSendMessageUsers.title'/></h3>
+				<!--1er etape-->
+				<div class="contenuPopEnvoiMessage beforeSend" id="flagFirstStep">
+						<span><fmt:message key='ciSendMessageUsers.subject'/></span><span class="infoChamp" ><fmt:message key='ciSendMessageUsers.subjectLittle'/></span>							
+						<input name="subject"id ="subject" type="text" class="champFormInscription sujetMessageMembre" value=""/>							
+						<span class="messageSujetVide hide"><fmt:message key='ciSendMessageUsers.subjectError'/></span>
+						<span><fmt:message key='ciSendMessageUsers.body'/></span><span class="infoChamp"><fmt:message key='ciSendMessageUsers.bodyLittle'/></span>							
+						<textarea rows="" cols="" class="contenuMessageMembre" name="body"id ="body"></textarea>
+						<span class="messageMessageVide hide"><fmt:message key='ciSendMessageUsers.bodyError'/></span>
+						<div  style="margin-top: 10px;" id="visibleMaildiv">
+							<input id="acceptVisibleMail" name="acceptVisibleMail" class="uneCheckbox fl"
+							type="checkbox" value="acceptVisible"/> <label for="acceptVisibleMail" class="offreParMail" style="width: 421px;margin-bottom: 7px;"><fmt:message key='ciSendMessageUsers.visibleMail'/></label>
+						</div>
+						<span class="messageVisibleVide hide"><fmt:message key='ciSendMessageUsers.acceptVisibleMail'/></span>
+						<input id="memberMessage" type="button" value="" class="btEnvoyerMessageMembre" /> 
+						<div class="clear"></div>
+				</div>
+				<!--fin 1er etape-->
+				<!--2eme etape-->
+				<div class="contenuPopEnvoiMessage afterSend" id="flagSecondStep" style="display:none;">
+					<span><fmt:message key='ciSendMessageUsers.confirmation'/>&nbsp;<span id="confirmationPseudo" class="confirmationPseudo"></span></span>
+					<input type="button" onclick="$.fancybox.close();" class="btRetourPagePrecedente">
+					<div class="clear"></div>
+				</div>
+				<!--fin 2eme etape-->
+			</form>
+		</div>
+	</div>
+	<%-- contenu html --%>
+	<a id="messageFancyboxLink" href="#popEnvoiMessage" style="display:none;"></a>
+</c:if>
+
+<c:if test="${not connected }">
+	<script type="text/javascript">
+	var ciSendMessageUsers = function(pseudo) {
+		openConnectionBox();
+	}
+	</script>
+</c:if>
+
+<%-- à mettre dans la page appellante --%>
+<%-- <c:if test="${connected }"><c:set var="onclick" >ciSendMessageUsers('${pseudo}')</c:set></c:if> --%>
+<%-- à mettre dans la page appellante --%>

@@ -1,0 +1,108 @@
+<%--
+	@author : el-aarko
+	@created : 8 August. 2012
+	@Id : MoveQuestionPopin
+	@description : fragment de jsp qui contient la popin deplacer une question
+					 / US-100
+
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<template:addResources type="javascript" resources="jquery.fancybox-1.3.4.pack.js"/>
+<%-- Script de validation et d'envoi du contenu abusif--%>
+
+<script type="text/javascript">
+var pathFlag = null;
+var urlMessage = null;
+var bodyMessage = null;
+jQuery(document).ready(function(){
+	$("#moveQuestionLink").fancybox({
+		hideOnOverlayClick: false,
+		padding: 0,
+		overlayColor: '#FFF'
+	});
+	
+	loadThematics($("#selectRubrics").val());
+});
+		
+var openMoveQuestionPopin = function() {
+	$("#moveQuestionLink").click();
+	return true;
+	
+};
+
+var loadThematics = function(pagePath) {
+	$("#selectThematics").html("");
+	var queryString = "rubricPath="+pagePath;
+	jQuery.ajax({
+		type : "post",
+		url : "${url.base}${currentNode.path}.ciGetThematicNodes.do",
+		data : queryString,
+		dataType  :"json",
+		success : function(obj) {
+			if (obj == null)
+				return;
+			if (obj.thematics) {
+				for (var i = 0; i < obj.thematics.length; i++) {
+					var thematic = obj.thematics[i];
+					$("#selectThematics").append('<option value="'+thematic.path+'">'+thematic.name+'</option>')
+				}
+			} else {
+				alert("Erreur lors de la r&eacute;cup&eacute;ration des pages th&eacute;matiques.");
+			}
+		}
+	});
+};
+
+var moveQuestion = function() {
+	if ($("#selectThematics").val() == "") {
+		alert("Veuillez s\u00E9lectionner une page th\u00E9matique destination.");
+		return;
+	}
+	$("#targetPagePath").val($("#selectThematics").val());
+	$("#move-question${currentNode.UUID}").submit();
+}
+</script>
+
+<%-- Deplacer (popup qui apparait au milieu de la page)  --%>	
+<div id="blocPopDeplacer">
+	<div id="popDeplacer" class="degrade">
+		<h3 class="band">D&eacute;placer la question</h3>
+		<div id="moveQuestionStep1" class="contenuPopMdpOublie">
+			<p>Changer la rubrique :</p>
+			<select id="selectRubrics"  class="champFormSignalerAbus" onchange="loadThematics(this.value);">
+				<c:forEach items="${jcr:getChildrenOfType(renderContext.site.home,'jnt:page')}" var="subchild" varStatus="step">
+					<c:if test="${subchild.properties['isRubric'].boolean}">
+					<c:set var="isselected"></c:set>
+					<c:if test="${step.first}">
+						<c:set var="isselected">selected="selected" </c:set>
+					</c:if>
+					<option <c:out value="${isselected}" escapeXml="false" /> value="${subchild.path }">${subchild.properties['jcr:title'].string }</option>
+				</c:if>
+				</c:forEach>
+			</select>
+			<p>Changer la th&eacute;matique :</p>
+			<select id="selectThematics" class="champFormSignalerAbus">
+			</select>
+			<fmt:message var="confirmMsg" key="question.move.confirm"/>
+			<input type="button" value="" class="btEnvoyerPwdOublie" onclick='if (window.confirm("${functions:escapeJavaScript(confirmMsg)}"))
+            	{ moveQuestion(); } return false;' /> 
+			<div class="clear"></div>
+		</div>
+		<div id="moveQuestionStep2" class="contenuPopMdpOublie hide">
+			<p>Votre demande a bien &eacute;t&eacute; prise en compte</p>
+			<div class="clear"></div>
+		</div>
+	</div>
+</div>
+
+<%-- Deplacer --%>
+<c:if test="${jcr:hasPermission(currentNode, 'moveQuestion')}">
+	<form action="${url.base}${currentNode.path}.ciMoveQuestionAction.do" method="post" id="move-question${currentNode.UUID}">
+		<input type="hidden" name="questionPagePath" value="${jcr:getParentOfType(currentNode,'jnt:page').path}"/>
+		<input id="targetPagePath" type="hidden" name="targetPagePath" value="" />
+	</form>
+</c:if>
+<%-- contenu html --%>
+<a id="moveQuestionLink" href="#popDeplacer" style="display:none;"></a>

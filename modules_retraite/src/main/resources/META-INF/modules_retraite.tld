@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <description>Modules Communaute A</description>
+    <display-name>cia</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>cia</short-name>
+    <uri>http://www.ag2rlamondiale.fr/tags/jahia/cia</uri>
+    <tag>
+    	<description>Return the error page url given the type number.</description>
+    	<name>errorPage</name>
+    	<tag-class>org.jahia.taglibs.ci.errors.ErrorPageTag</tag-class>
+    	<body-content>empty</body-content>
+    	<attribute>
+    		<description>The error type number. Must be an integer.</description>
+    		<name>errorNumber</name>
+    		<required>true</required>
+    		<type>java.lang.Integer</type>
+    	</attribute>
+    	<attribute>
+    		<description>The error type number. Must be an integer.</description>
+    		<name>var</name>
+    		<type>java.lang.String</type>
+    	</attribute>
+    </tag>
+    <tag>
+    	<description>Return the error page url given the type number.</description>
+    	<name>addToList</name>
+    	<tag-class>org.jahia.taglibs.ci.core.AddToListTag</tag-class>
+    	<body-content>empty</body-content>
+    	<attribute>
+    		<description>The name to find the list or set and store it if no exists.</description>
+    		<name>var</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    		<type>java.lang.String</type>
+    	</attribute>
+    	<attribute>
+    		<description>The object to add in list entry.</description>
+    		<name>value</name>
+    		<required>true</required>
+    		<rtexprvalue>true</rtexprvalue>
+    		<type>java.lang.Object</type>
+    	</attribute>
+    	<attribute>
+    		<description>The scope of the attribute. Default is page scope.</description>
+    		<name>scope</name>
+    		<required>false</required>
+    		<rtexprvalue>true</rtexprvalue>
+    		<type>java.lang.String</type>
+    	</attribute>
+    </tag>
+    <function>
+        <description>Get a human readable size from a byte size.</description>
+        <name>formattedSize</name>
+        <function-class>org.commons.util.Formatter</function-class>
+        <function-signature>java.lang.String getFormattedSize(long)</function-signature>
+        <example>${cia:formattedSize(614580)}</example>
+    </function>
+    <function>
+    	<description>Get a list of rubrics from user preferences</description>
+		<name>userRubrics</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.util.List getSelectedRubrics(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:userRubrics(user)}</example>
+    </function>
+    <function>
+    	<description>Get a list of thematics from user preferences</description>
+		<name>userThematics</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.util.List getSelectedThematics(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:userThematics(user)}</example>
+    </function>
+    <function>
+    	<description>Get the title of a page node</description>
+		<name>pageTitle</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>java.lang.String getPageTitle(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:pageTitle(jntPage)}</example>
+    </function>
+    <function>
+    	<description>Get the short-title of a page node</description>
+		<name>pageShortTitle</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>java.lang.String getPageShortTitle(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:pageShortTitle(jntPage)}</example>
+    </function>
+    <function>
+    	<description>Get the url of the logo of a page node</description>
+		<name>pageLogo</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>java.lang.String getPageLogo(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:pageLogo(jntPage)}</example>
+    </function>
+    <function>
+    	<description>Get JahiaUser by pseudoname</description>
+		<name>getUserByPseudoname</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>org.jahia.services.usermanager.JahiaUser getUserByPseudoname(java.lang.String)</function-signature>
+		<example>${cia:getUserByPseudoname(pseudo)}</example>
+    </function>
+    <function>
+    	<description>Get true if the user is a member</description>
+		<name>isMember</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>boolean isMember(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:isMember(user)}</example>
+    </function>
+    <function>
+    	<description>Deprecated! Use cia:isInProfessionalGroup(...)!... Get true if the user is a professional</description>
+		<name>isProfessional</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>boolean isProfessional(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:isProfessional(user)}</example>
+    </function>
+    <function>
+    	<description>Get true if the user is in the group PROFESSIONNEL(is a professional)</description>
+		<name>isInProfessionalGroup</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>boolean isProfessional(org.jahia.services.render.RenderContext,org.jahia.services.usermanager.JahiaUser)</function-signature>
+		<example>${cia:isInProfessionalGroup(renderContext,jahiaUser)}</example>
+    </function>    
+    <function>
+    	<description>Get true if the user is a moderator</description>
+		<name>isModerator</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>boolean isModerator(org.jahia.services.render.RenderContext,org.jahia.services.usermanager.JahiaUser)</function-signature>
+		<example>${cia:isModerator(renderContext,jahiaUser)}</example>
+    </function>
+    <function>
+    	<description>Get member since</description>
+		<name>memberSince</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.lang.String getMemberSince(java.util.Calendar)</function-signature>
+		<example>${cia:memberSince(user)}</example>
+    </function>
+    <function>
+    	<description>Get the url to view a profile (member, professional or moderator)</description>
+		<name>getProfileUrl</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.lang.String getProfileUrl(org.jahia.services.render.RenderContext,org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:getProfileUrl(renderContext,user)}</example>
+    </function>
+    <function>
+    	<description>is session event flagged ? session event can be 'profileUpdated', </description>
+		<name>removeSessionEventFlag</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.lang.Boolean removeSessionEventFlag(org.jahia.services.render.RenderContext, java.lang.String)</function-signature>
+		<example>${cia:removeSessionEventFlag(renderContext, 'profileUpdated') }</example>
+    </function>
+    <function>
+    	<description>Get the most active users for the last months</description>
+		<name>getMostActiveUsersForLastMonths</name>  
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.util.List getMostActiveUsersForLastMonths(int, int)</function-signature>
+		<example>${cia:getMostActiveUsersForLastMonths(3, 10) }</example>
+    </function>
+	<function>
+    	<description>Get the most active users for the last months</description>
+		<name>getNumberOfRankStars</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>int getNumberOfRankStars(java.lang.String)</function-signature>
+		<example>${cia:getNumberOfRankStarsForLastMonths(e24b99f1-9eda-42aa-8b01-47be13b21d62) }</example>
+    </function>
+	<function>
+		<description>Get the node wrapper of type jnt:page that is a rubric page.</description>
+		<name>getRubricParent</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>org.jahia.services.content.JCRNodeWrapper getRubricParent(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:getRubricParent(currentNode)}</example>
+	</function>
+	<function>
+		<name>getAvatarFile</name>
+		<function-class>org.jahia.modules.ci.helpers.UserHelper</function-class>
+		<function-signature>java.lang.String getAvatarFile(org.jahia.services.render.RenderContext,org.jahia.services.content.JCRNodeWrapper,java.lang.String)</function-signature>
+	</function>
+    <function>
+    	<description>Get the node wrapper of type jnt:page that is a thematic page.</description>
+		<name>getThematicParent</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>org.jahia.services.content.JCRNodeWrapper getThematicParent(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:getThematicParent(currentNode)}</example>
+    </function>
+    <function>
+    	<description>Get the list of parent pages of the node.</description>
+		<name>getParentPagesList</name>
+		<function-class>org.jahia.modules.ci.helpers.PageHelper</function-class>
+		<function-signature>java.util.List getParentPagesList(org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:getParentPagesList(currentNode)}</example>
+    </function>
+    <function>
+    	<description>Cut a text without cuting words.</description>
+		<name>cutString</name>
+		<function-class>org.commons.util.StringUtil</function-class>
+		<function-signature>java.lang.String cutString(java.lang.String,java.lang.Integer)</function-signature>
+		<example>${cia:cutString(text, 100)}</example>
+    </function>
+    <function>
+    	<description>Wrap the matching words in a text with html tag mentionned. Can ignore case or not.</description>
+		<name>wrapWithTag</name>
+		<function-class>org.commons.util.HtmlTools</function-class>
+		<function-signature>java.lang.String wrapWithTag(java.lang.String, java.lang.String, java.lang.String, boolean)</function-signature>
+		<example>${cia:wrapWithHtmlTag('text to wrap match with tag', 'Match', 'strong', true)}</example>
+    </function>
+	<function>
+    	<description>Removes the /cms from a hyperlink</description>
+		<name>encodePostUrls</name>
+		<function-class>org.commons.util.HtmlTools</function-class>
+		<function-signature>java.lang.String encodePostUrls(java.lang.String,javax.servlet.http.HttpServletResponse)</function-signature>
+		<example>${cia:encodePostUrls(htmlBody, response)}</example>
+    </function>
+	<function>
+    	<description>Removes the "/cms/render/live/fr/sites/preparonsmaretraite" from a hyperlink</description>
+		<name>clearUrl</name>
+		<function-class>org.jahia.utils.JahiaTools</function-class>
+		<function-signature>java.lang.String clearUrl(java.lang.String,org.jahia.services.content.JCRNodeWrapper)</function-signature>
+		<example>${cia:clearUrl(siteAddress, node)}</example>
+    </function>
+    <function>
+    	<description>Remove all matching tag given the name.</description>
+		<name>extractExcerptPart</name>
+		<function-class>org.jahia.utils.SearchUtils</function-class>
+		<function-signature>java.lang.String extractExcerptPart(java.lang.String,java.lang.String)</function-signature>
+    </function>
+    <function>
+    	<description>Request user list whatever the current user privileged.</description>
+		<name>getUserList</name>
+		<function-class>org.jahia.utils.SearchUtils</function-class>
+		<function-signature>java.util.List getUserListOrderBy(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.Integer)</function-signature>
+    </function>
+    <function>
+    	<description>Return an ordered by most active users list.</description>
+		<name>getMostActiveUsersList</name>
+		<function-class>org.jahia.utils.SearchUtils</function-class>
+		<function-signature>java.util.List getMostActiveUsersList(javax.jcr.NodeIterator)</function-signature>
+    </function>
+    <function>
+    	<description>Return the formatted string date according to given date and pattern. It can also replace date part with heuristic adverbs (today, yesterday)</description>
+		<name>formatDate</name>
+		<function-class>org.commons.util.Formatter</function-class>
+		<function-signature>java.lang.String formatDate(java.util.Date, java.lang.String, java.lang.Boolean)</function-signature>
+		<example>${cia:formatDate(date, 'dd/MM/yyyy', true)}</example>
+    </function>
+</taglib>

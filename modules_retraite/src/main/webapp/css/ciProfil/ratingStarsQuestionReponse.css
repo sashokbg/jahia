@@ -1,0 +1,14 @@
+.star {
+    background: url('../../img/ciProfil/stars_small.png') no-repeat;
+    display: inline-block !important;
+    width: 10px;
+    height: 10px;
+}
+
+.fullStar {
+    background-position: -0px -0px;
+}
+
+.emptyStar {
+    background-position: -0px -19px;
+}

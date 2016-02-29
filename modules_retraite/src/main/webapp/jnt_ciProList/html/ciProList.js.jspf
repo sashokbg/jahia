@@ -1,0 +1,146 @@
+<%--
+	@author : el-aarko
+	@created : 17 aout 2012
+	@Id : idDeLaPage
+	@description : queFaitLaJsp
+
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js" />
+<template:addResources>
+<script type="text/javascript">
+var selectedOption = "${param.thematicPath}";
+var loadThematics = function(pagePath) {
+	$("#selectThematics").html('<option value="">S\u00E9lectionner</option>');
+	var queryString = "rubricPath="+pagePath;
+	jQuery.ajax({
+		type : "post",
+		url : "${url.base}${currentNode.path}.ciGetThematicNodes.do",
+		data : queryString,
+		dataType  :"json",
+		success : function(obj) {
+			if (obj == null)
+				return;
+			if (obj.thematics) {
+				for (var i = 0; i < obj.thematics.length; i++) {
+					var thematic = obj.thematics[i];
+					var selected = "";
+					if (selectedOption == thematic.identifier) {
+						selected = 'selected="selected"';
+					}
+					$("#selectThematics").append('<option value="' + thematic.identifier + '" '+ selected + '>' + thematic.name + '</option>');
+				}
+			} else {
+				alert("Erreur lors de la r\u00E9cup\u00E9ration des pages th\u00E9matiques.");
+			}
+		}
+	});
+};
+
+function fitToContent(id)
+{
+   var text = id && id.style ? id : document.getElementById(id);
+   if ( !text )
+      return;
+
+   var adjustedHeight = text.clientHeight;
+   adjustedHeight = Math.max(text.scrollHeight, adjustedHeight);
+   if ( adjustedHeight > text.clientHeight ) {
+      text.style.height = adjustedHeight + "px";
+   } else {
+	   text.style.height = text.scrollHeight;
+   }
+}
+
+function openPreview() {
+	$("#questionTitlePreview").html($("#questionTitle").val());
+	$("#questionBodyPreview").text($("#questionBody").val());
+	$("#questionBodyPreview").html($("#questionBodyPreview").text().replace(/\n/g, "<br>"));
+	$("#questionEdition").hide();
+	$("#questionPreview").show();
+}
+
+function closePreview() {
+	$("#questionPreview").hide();
+	$("#questionEdition").show();
+}
+
+jQuery(document).ready(function(){
+	$("#questionPreview").hide();
+	
+	$("#selectRubrics").change(function() {
+		if ("" != $(this).val())  {
+			loadThematics($(this).val());
+		}
+	});
+	
+	if ($("#selectRubrics").val() != "") {
+		loadThematics($("#selectRubrics").val());
+	}
+	
+	$("#questionBody").keyup(function() {fitToContent(this);});
+	
+	var questionValidator = $("#askQuestionForm").validate({
+		onkeyup: false,
+		onblur : true,
+		errorElement: "div",
+		errorClass: "erreur",
+		errorPlacement: function(error, element) {
+			var errorFor = error.attr("for");
+			if (errorFor == "selectThematics") {
+				$("#thematicError").html(error);
+			} else if (errorFor == "questionTitle") {
+				$("#titleError").html(error);
+			} else if (errorFor == "selectRubrics") {
+			} else {
+				error.insertAfter(element);
+			}
+		},
+		rules : {
+			rubricPath  : "required",
+			thematicPath : "required",
+			title : {
+				required : true,
+				maxlength : 100
+			},
+			body : {
+				maxlength : 2000
+			}
+		},
+		messages: {
+			rubricPath : "<fmt:message key='question.error.thematic.required'/>",
+			thematicPath : "<fmt:message key='question.error.thematic.required'/>",
+			title : {
+				required : "<fmt:message key='question.error.title.required'/>",
+				maxlength : "<fmt:message key='question.error.title.length'/>"
+			},
+			body : {
+				maxlength : "<fmt:message key='question.error.body.length'/>"
+			}
+		}
+	});
+	
+	$("#askQuestionForm").submit(function() {
+		if (questionValidator.checkForm()) {
+			return true;
+		}
+		closePreview();
+		return false;
+	});
+	
+	<c:if test="${connected}">
+	$(".btEnvoyerQuestion").click(function () {
+		$("#askQuestionForm").submit();
+	});
+	</c:if>
+	<c:if test="${not connected}">
+	$(".btPrevisualiserQuestion, .btEnvoyerQuestion").click(function () {
+		alert("Vous devez être connect\u00E9 pour poser une question.");
+		return false;
+	});
+	</c:if>
+});
+</script>
+</template:addResources>

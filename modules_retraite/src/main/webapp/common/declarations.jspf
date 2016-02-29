@@ -1,0 +1,54 @@
+<%--
+	@author : m.elaarkoubi
+	@Id : declaration, include, taglib, elvariable
+	@description : fragment de page qui permet de d�clarer tous les includues et les taglibs
+
+ --%>
+
+<%@ taglib prefix="jcr" uri="http://www.jahia.org/tags/jcr" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ui" uri="http://www.jahia.org/tags/uiComponentsLib" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="utility" uri="http://www.jahia.org/tags/utilityLib" %>
+<%@ taglib prefix="template" uri="http://www.jahia.org/tags/templateLib" %>
+<%@ taglib prefix="functions" uri="http://www.jahia.org/tags/functions" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="query" uri="http://www.jahia.org/tags/queryLib" %>
+<%@ taglib prefix="s" uri="http://www.jahia.org/tags/search" %>
+<%@ taglib prefix="cia" uri="http://www.ag2rlamondiale.fr/tags/jahia/cia" %>
+<%--@elvariable id="currentNode" type="org.jahia.services.content.JCRNodeWrapper"--%>
+<%--@elvariable id="out" type="java.io.PrintWriter"--%>
+<%--@elvariable id="script" type="org.jahia.services.render.scripting.Script"--%>
+<%--@elvariable id="scriptInfo" type="java.lang.String"--%>
+<%--@elvariable id="workspace" type="java.lang.String"--%>
+<%--@elvariable id="renderContext" type="org.jahia.services.render.RenderContext"--%>
+<%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
+<%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
+
+<utility:useConstants var="ciConstants" className="org.commons.util.CiConstants"/>
+
+<c:set var="postDatePattern" value="dd/MM/yyyy' - 'HH'H'mm" />
+<c:set var="questionDatePattern" value="dd MMMM yyyy' - 'HH'H'mm" />
+<c:set var="replyDatePattern" value="dd/MM/yyyy" />
+<c:set var="myProfileUrl" value="${renderContext.site.properties['userProfilLink'].node.url}" />
+<c:set var="myActivityUrl" value="${renderContext.site.properties['userActivitiesLink'].node.url}" />
+<c:set var="siteKey" value="${renderContext.site.siteKey}"/>
+<c:set var="clauseSiteUsers" value=" user.${siteKey } = 'true' and "/>
+<c:set var="clauseSiteUsersWithoutAnd" value=" user.${siteKey } = 'true' "/>
+<c:set var="connected" value="${renderContext.loggedIn and not (currentAliasUser.username eq 'guest')}" />
+<c:if test="${connected and not cia:isModerator(renderContext, currentUser)}">
+	<c:set var="connected" value="${connected and (currentUser.properties[siteKey] eq 'true')}" />
+</c:if>
+
+<c:set var="isMaintenance" value="${not empty renderContext.site.properties['onMaintenance'] && renderContext.site.properties['onMaintenance'].boolean}" />
+
+<%@page import="java.util.Date"%>
+<fmt:formatDate value="<%= new Date() %>" pattern="dd/MM/yyyy HH:mm:ss" var="cacheDate" />
+<!-- cache-date - ${currentNode.displayableName} : ${cacheDate} -->
+
+<template:addResources>
+	<script>
+		var allowedOverseaseRegions = [ "971", "972", "973", "974", "975",
+				"976", "977", "978", "984", "986", "987", "988" ];
+	</script>
+</template:addResources>

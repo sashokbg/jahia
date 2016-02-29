@@ -1,0 +1,81 @@
+<%--
+	@author : lakreb
+	@created : 1 aout 2012
+	@Id : ciUserIntro
+	@description : 	permet d'initialiser les informations utilisateur la variable  
+					userNode (JCRNodeWrapper) doit etre fournie avant d'inclure ce fichier
+--%>
+ 
+ 
+<%@include file="declarations.jspf"%>
+
+<%-- since Jahia 6.6.1.5 the user node Wrapper make some properties inaccessible, but it is possible to access them via the decoratedNode %-) --%>
+<c:catch>
+	<%-- throws NoSuchMethodException under Jahia 6.6.1.5 --%>
+	<c:set var="userNode" value="${userNode.decoratedNode}" />
+</c:catch>
+
+<c:set var="uuid">${userNode.properties['jcr:uuid'].string}</c:set>
+<c:set var="pseudo">${userNode.properties['pseudoname'].string}</c:set>
+<c:set var="userLocked">${userNode.properties['j:accountLocked'].boolean}</c:set>
+<c:set var="firstname" value="${userNode.properties['j:firstName'].string}" />
+<c:set var="lastname" value="${userNode.properties['j:lastName'].string}" />
+<c:set var="birthDate"	value="${userNode.properties['birthDate'].string}" />
+<c:set var="zipCode" value="${userNode.properties['zipCode'].string}" />
+<c:set var="country" value="${userNode.properties['country'].string}" />
+<c:set var="email" value="${userNode.properties['j:email'].string}" />
+<c:set var="retreatYear" value="${userNode.properties['retreatYear'].string}" />
+<c:set var="selectedRubrics" value="${userNode.properties['selectedRubrics'].string}" />
+<c:set var="selectedThematics" value="${userNode.properties['selectedThematics'].string}" />
+<c:set var="subscribeDate" value="${userNode.properties['jcr:created'].date}" />
+<c:set var="nbOfQuestions" value="${empty userNode.properties['nbOfQuestions'] ? 0 : userNode.properties['nbOfQuestions'].long}" />
+<c:set var="nbOfReplies" value="${empty userNode.properties['nbOfReplies'] ? 0 : userNode.properties['nbOfReplies'].long}" />
+<c:set var="gender">${userNode.properties['gender'].string}</c:set>
+<c:set var="function">${userNode.properties['j:function'].string}</c:set>
+<c:set var="organization">${userNode.properties['j:organization'].string}</c:set>
+<c:set var="userType">${userNode.properties['userType'].string}</c:set>
+<c:set var="biography">${userNode.properties['biography'].string}</c:set>
+<c:set var="signature">${userNode.properties['signature'].string}</c:set>
+<c:set var="selectedActivities" value="${userNode.properties['choixActivite'].string}" />
+
+<c:set var="avatarSrc">
+	${cia:getAvatarFile(renderContext,userNode, null)}
+</c:set>
+<c:set var="avatarSrc40">
+	${cia:getAvatarFile(renderContext,userNode, "40")}
+</c:set>
+<c:set var="avatarSrc51">
+	${cia:getAvatarFile(renderContext,userNode, "51")}
+</c:set>
+<c:set var="avatarSrc65">
+	${cia:getAvatarFile(renderContext,userNode,"65")}
+</c:set>
+<c:set var="avatarSrc70">
+	${cia:getAvatarFile(renderContext,userNode,"70")}
+</c:set>
+
+<%-- le type de l'utilisateur, futur retraite ou retraite junior ou expert (si expert le nom de l'organisme) --%>
+<c:set var="userTypeLabel">
+	<fmt:message key="user.${userNode.properties['userType'].string}">
+		<fmt:param>${userNode.properties['gender'].string eq 'female' ? 'e' : ''}</fmt:param>
+	</fmt:message>
+</c:set>
+
+<%-- bleu ou vert --%>
+<%-- Selon le type : retrait� ou expert (deux valeurs : statutRetraite | statutPro --%>
+<c:set var="userStatusCss">vert </c:set>
+<c:set var="userTypeCss">statutRetraite </c:set>
+<c:set var="isProfessional" value="${false}" />
+<c:if test="${cia:isProfessional(userNode)}">
+	<c:set var="userStatusCss">bleu </c:set>
+	<c:set var="userTypeCss">statutPro </c:set>
+	<c:set var="userTypeLabel">${userNode.properties['j:function'].string }</c:set>
+	<c:set var="isProfessional" value="${true}" />
+	<c:set var="fullname">${firstname}&nbsp;${lastname}</c:set>
+	<c:set var="signature" value="${userNode.properties['signature'].string}" />
+</c:if>
+<c:set var="displayedUser" value="${cia:getUserByPseudoname(pseudo)}"/>
+<c:if test="${cia:isModerator(renderContext,displayedUser)}">
+	<c:set var="userTypeLabel">${userNode.properties['j:function'].string }</c:set>
+</c:if>
+<c:set var="publicProfileUrl">${cia:getProfileUrl(renderContext, userNode)}</c:set>

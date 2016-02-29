@@ -1,0 +1,22 @@
+<%--
+	@author : Sylvain Pichard
+	@created : 12 aout 2013
+	@Id : ga
+	@description : Ajout du google analytic sur la page
+ --%>
+
+<%@include file="../../common/declarations.jspf" %>
+
+<%-- Google analytic --%>
+<template:addResources>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.boxQuestion .outils a').click(function() {
+				trackEvent(['Question','Simulateur']);
+			});	
+			$('.boxQuestion .btPrevisualiserQuestion').click(function() {
+				trackEvent(['Question','Previsualiser question']);
+			});	
+		});
+	</script>
+</template:addResources>

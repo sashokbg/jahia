@@ -1,0 +1,314 @@
+<%--
+	@author : el-aarko
+	@created : 20 juil. 2012
+	@Id : form inscription validator
+	@description : script javascript qui permet de valider le formulaire
+
+ --%>
+<%@ include file="../../common/declarations.jspf"%>
+<%@include file="ga.jspf"%> 
+
+<c:set value="${renderContext.site.properties['avatarMaxSize']}" var="avatarMaxSize" />
+<template:addResources insert="true">
+	<script type="text/javascript">
+		var avatarSrc = '${ciConstants.AVATAR_DEFAULT_FEMALE}';
+		var urlAction =  '${url.base}${currentNode.path}.ciLoadAvatar.do';
+		var avatarMaxSize = eval("${avatarMaxSize.long}");
+		var showDeleteButton = false;
+		if (!avatarMaxSize) avatarMaxSize = 6291456;
+	</script>
+</template:addResources>
+
+<template:addResources type="javascript" resources="jquery.min.js,jquery.validate.js" />
+<template:addResources type="javascript" resources="jCrop/loader/fileuploader.js" />
+<template:addResources type="javascript" resources="jCrop/jquery.Jcrop.ag2r.js" />
+<template:addResources type="javascript" resources="jquery.maskedinput-1.3.min.js" />
+<template:addResources type="javascript" resources="ciAvatar/ciAvatar.js" />
+<template:addResources type="javascript" resources="jquery.fancybox-1.3.4.pack.js"/>
+ 
+<template:addResources>
+
+<fmt:message var="disponible" key='registration.error.disponible' />
+<fmt:message var="indisponible" key='registration.error.indisponible' />
+
+<script type="text/javascript">
+	function alphaNumOnly(e) {
+		var key;
+		var keychar;
+	
+		if (window.event)
+		   key = window.event.keyCode;
+		else if (e)
+		   key = e.which;
+		else
+		   return true;
+		keychar = String.fromCharCode(key);
+		keychar = keychar.toLowerCase();
+	
+		// control keys
+		if ((key==null) || (key==0) || (key==8) || 
+		    (key==9) || (key==13) || (key==27) )
+		   return true;
+		
+		// alphas and numbers
+		else if ((("abcdefghijklmnopqrstuvwxyz0123456789").indexOf(keychar) > -1))
+		   return true;
+		else
+		   return false;
+	
+	}
+	function isNumber(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+	jQuery(document).ready(function() {
+		$("#lienPopLoding").fancybox({
+			padding: 0,			
+			overlayColor: '#FFF',
+			centerOnScroll : true,
+			modal: true,
+		});
+		
+		$("#radRetJunior").click(function(){
+			$(".frNode").hide();
+			$(".rjNode").show();
+		});
+		
+		$("#radFuturRetraite").click(function(){
+			$(".rjNode").hide();
+			$(".frNode").show();
+		});
+		$("#radFuturRetraite").click();
+		
+		/*
+		* Masque de saisie
+		*/
+		$("#birthDate").mask("99/99/9999");
+		$("#retreatYear").mask("9999");
+		
+		/*
+		* Validation du formlaire d'inscription (Jquery Validator)
+		*/
+		$(".messageGenerique").hide();
+       	jQuery.validator.addMethod("frenchDate", function(value, element) {
+       		if (value == "") return true;
+       		var regex = new RegExp(/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{2}$/);
+       		return regex.test(value);
+       	});
+       	
+       	/*
+       	* Fonction de gestion des Pays France et Dom Tom :
+       	*/
+       	var isFranceOrDomTomCountry = function() {
+       		var selecedCountry = $("#country").val();
+			return (selecedCountry == "France" || selecedCountry == "Wallis et Futuna" ||  selecedCountry == "Polyn&eacute;sie fran&ccedil;aise"
+				||  selecedCountry == "Guyane fran&ccedil;aise" ||  selecedCountry == "Terres australes fran&ccedil;aises"
+				||  selecedCountry == "Saint Pierre et Miquelon" ||  selecedCountry == "La R&eacute;union"
+				||  selecedCountry == "La Nouvelle Cal&eacute;donie" ||  selecedCountry == "Mayotte"
+				||  selecedCountry == "Les Antilles Fran&ccedil;aises");
+       	};
+       	
+       	$("#country").change(function() {
+       		if (isFranceOrDomTomCountry()) {
+       			$(".conteneurCP").show();
+       			$(".conteneurCPErreur").show();
+       		} else {
+       			$(".conteneurCP").hide();
+       			$(".conteneurCP #zipCode").val('');
+       			$(".conteneurCPErreur").hide();
+       		}
+       	});
+       	
+       	jQuery.validator.addMethod("frenchZip", function(value, element) {
+       		if (value == "") return true;
+       		if (isNumber(value) > 0 && value.length >= 2) {
+    			var dep = value.substring(0,2);
+    			if (eval(dep) >= 1 && eval(dep) <= 95) {
+    				return true;
+    			} else if (eval(dep) >= 97) {
+    				var code = value.substring(0,3);
+    				if ($.inArray(code, allowedOverseaseRegions) > -1) {
+    					return true;
+    				} 
+    			}
+    		}
+       		return false;
+       	});
+       	
+		
+       	var inscriptionFormValidator = $("#ciInscriptionForm").validate({
+       		onkeyup: false,
+       		onblur : true,
+       		errorElement: "span",
+        	errorClass: "messageErreur",
+        	errorContainer: $(".messageGenerique"),
+    		errorPlacement: function(error, element) {
+				var errorFor = error.attr("for");
+				if (errorFor == "cguAccepted") {
+					error.insertBefore($("#cguMessage"));
+				} else {
+					error.insertAfter(element);
+				}
+			},
+    		rules : {
+    			gender : "required",
+    			firstname : "required",
+    			lastname : "required",
+    			pseudoname : {
+    				required : true,
+    				minlength : 4,
+    				maxlength : 20
+    			},
+    			emailAddress : {
+    				required : true,
+    				email : true
+    			},
+    			confirmEmailAddress : {
+    				 required: true,
+                     equalTo: "#emailAddress"
+    			},
+    			password : {
+    				required : true,
+    				minlength : 4,
+    				maxlength : 20
+    			},
+    			confirmPassword : {
+    				required : true,
+    				equalTo: "#password"
+    			},
+    			country : "required",
+    			zipCode :  {
+    				frenchZip : true,
+    				number : true,
+    				required : function() {
+    					return isFranceOrDomTomCountry();
+    				},
+    				minlength : 5,
+    				maxlength : 5
+    			},
+    			cguAccepted : "required"
+    		},
+    		messages: {
+    			gender : "<fmt:message key='registration.error.gender.required'/>",
+    			firstname: "<fmt:message key='registration.error.firstname.required'/>",
+    			lastname: "<fmt:message key='registration.error.lastname.required'/>",
+    			pseudoname : {
+    				required : "<fmt:message key='registration.error.pseudo.required'/>",
+    				minlength : "<fmt:message key='registration.error.pseudo.length'/>",
+    				maxlength : "<fmt:message key='registration.error.pseudo.length'/>"
+    			},
+    			emailAddress : "<fmt:message key='registration.error.mail.invalid'/>",
+    			confirmEmailAddress : {
+    				required: "<fmt:message key='registration.error.mail.confirmation.required'/>",
+	   				equalTo: "<fmt:message key='registration.error.mail.confirmation.invalid'/>"
+	   			},
+    			password : {
+    				required : "<fmt:message key='registration.error.password.required'/>",
+    				minlength : "<fmt:message key='registration.error.password.length'/>",
+    				maxlength : "<fmt:message key='registration.error.password.length'/>"
+    			},
+    			confirmPassword : {
+    				required : "<fmt:message key='registration.error.password.confirm.required'/>",
+    				equalTo: "<fmt:message key='registration.error.password.confirm.length'/>"
+    			},
+    			country : "<fmt:message key='registration.error.password.required'/>",
+    			zipCode :  {
+    				required : "<fmt:message key='registration.error.zipcode.required'/>",
+    				frenchZip : "<fmt:message key='registration.error.zipcode.invalid'/>",
+    				number : "<fmt:message key='registration.error.zipcode.invalid'/>",
+    				minlength : "<fmt:message key='registration.error.zipcode.length'/>",
+        			maxlength : "<fmt:message key='registration.error.zipcode.length'/>"
+    			},
+    			birthDate : "<fmt:message key='registration.label.birthday.error.invalid'/>",
+    			cguAccepted : "<fmt:message key='registration.error.cg.required' />"
+    		}
+   		});
+       	
+       	/*
+		* Validation de l'unicite du pseudoname
+       	*/
+       	var availablePseudoname = false;
+    	var validatePseudonameUnicity = function() {
+    		if (inscriptionFormValidator.check(inscriptionFormValidator.currentForm.pseudoname)) {
+    			jQuery.ajax({
+          			type : "post",
+          			url : "${url.base}${currentNode.path}.ciCheckUserUnicityAction.do",
+          			data : "pseudoname="+$("#pseudoname").val(),
+          			dataType :"json",
+          			success : function(response) {
+          				availablePseudoname = response.available;
+          				if (response.available) {
+          					$("#pseudonameValid").addClass("pseudoValideMessage").html("${disponible}").show();
+          				} else {
+          					$("#pseudonameValid").removeClass("pseudoValideMessage").html("${indisponible}").show();
+          				}
+          			}
+          		});
+    		} else {
+    			$("#pseudonameValid").hide();
+    		}
+    	};
+    	$("#pseudoname").blur(validatePseudonameUnicity);
+    	
+    	/*
+		* Validation de l'unicite de l'adresse e-mail
+       	*/
+       	var availableEmailAddress = false;
+       	var validateEmailAddressUnicity = function() {
+    		if (inscriptionFormValidator.check(inscriptionFormValidator.currentForm.emailAddress)) {
+    			jQuery.ajax({
+          			type : "post",
+          			url : "${url.base}${currentNode.path}.ciCheckUserUnicityAction.do",
+          			data : "emailAddress="+$("#emailAddress").val(),
+          			dataType :"json",
+          			success : function(response) {
+          				availableEmailAddress = response.available;
+          				if (response.available) {
+          					$("#emailAddressValid").addClass("pseudoValideMessage").html("${disponible}").show();
+          				} else {
+          					$("#emailAddressValid").removeClass("pseudoValideMessage").html("${indisponible}").show();
+          				}
+          			}
+          		});
+    		} else {
+    			$("#emailAddressValid").hide();
+    		}
+    	};
+    	$("#emailAddress").blur(validateEmailAddressUnicity);
+    	
+    	/*
+    	* Envoyer le formulaire si tout est OK (validator + pseudo dispo + mail dispo)
+    	*/
+    	$("#ciInscriptionForm").submit(function() {
+    		if (inscriptionFormValidator.checkForm() && availablePseudoname && availableEmailAddress) {
+    			sendGoogleAnalytics(this);
+    			//show loading popup
+    			$('#lienPopLoding').click();
+    			return true;
+    		} else {
+    			$(".messageGenerique").show();
+    			window.scrollTo($(".messageGenerique").offset().left,$(".messageGenerique").offset().top);
+    			validatePseudonameUnicity();
+    			validateEmailAddressUnicity();
+    			return false;
+    		}
+    	});
+    	$("#submitButton").click(function() {
+    		$("#ciInscriptionForm").submit();
+       	});
+    	
+    	
+    	var errors = "${error}";
+    	if (errors != "") {
+    		$(".messageGenerique").html("Votre pseudo est d&eacute;ja pris, veuillez resaisir vos informations").show();
+			window.scrollTo($(".messageGenerique").offset().left,$(".messageGenerique").offset().top);
+    	}
+    	
+    	$("#pseudoname").bind('paste', function (e) {
+			e.preventDefault();
+		});
+	});
+	
+</script>
+
+</template:addResources>
+<%session.removeAttribute("error");%>

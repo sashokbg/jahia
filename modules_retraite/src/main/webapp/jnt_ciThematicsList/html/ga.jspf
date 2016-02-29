@@ -1,0 +1,23 @@
+<%--
+	@author : kirilov
+	@created : 13 août 2013
+	@Id : ga
+	@description : google analytics callbacks
+
+ --%>
+<%@include file="../../common/declarations.jspf" %>
+
+<!-- Google Analytics Callbacks -->
+<template:addResources>
+	<script type="text/javascript">
+			$(document).ready(function() {
+				$('.titreBoiteRubrique a').each(function(index){
+					var rubric = '${functions:escapeJavaScript(cia:getRubricParent(currentNode).displayableName)}';
+					var thematic = $(this).text();
+					$(this).click(function(){
+						trackEvent(['Theme',rubric,thematic]);
+					});
+				});
+			});
+		</script>
+</template:addResources>

@@ -1,0 +1,43 @@
+<%--
+	@author : Alexander Kirilov
+	@created : 14 aout 2013
+	@Id : ga
+	@description : Ajout du google analytic sur la page
+ --%>
+
+<%-- Google analytic --%>
+<template:addResources>
+	<script type="text/javascript">
+		function sendGoogleAnalytics(form){
+			var gender = $(form).find('input:[name=gender]:checked').val();
+			var codePostale = $(form).find('input:[name=zipCode]').val();
+			var pays = $(form).find('select:[name=country] option:selected').val();
+			var status = $(form).find('input:[name=userType]:checked').next().text();
+			var birthDate = $(form).find('input:[name=birthDate]').val();
+			var statusProf = $(form).find('input:[name=choixActivite]:checked').next().text();
+			var retreatYear = $(form).find('input:[name=retreatYear]').val();
+			var receiveOffers = $(form).find('input:[name=acceptNewsletterGroup]:checked');
+			var receiveNewsletter = $(form).find('input:[name=acceptNewsletter]:checked');
+			var hasEmptyPhoto = $(form).find('#cropppingZone').is(':empty');
+			
+			if(!hasEmptyPhoto)
+				trackEvent(['Inscription','Formulaire photo']);
+			trackEvent(['Inscription','Formulaire sexe',gender]);
+			if(codePostale!=''){
+				trackEvent(['Inscription','Formulaire CP',codePostale]);
+			}
+			trackEvent(['Inscription','Formulaire pays',pays]);
+			trackEvent(['Inscription','Formulaire status',status]);
+			trackEvent(['Inscription','Formulaire naissance',birthDate]);
+			trackEvent(['Inscription','Formulaire situation pro',statusProf]);
+			trackEvent(['Inscription','Formulaire date depart',retreatYear]);
+			if(receiveOffers.size()!=0){
+				trackEvent(['Inscription','Formulaire mailing','Offres marque']);
+			}
+			if(receiveNewsletter.size()!=0){
+				trackEvent(['Inscription','Formulaire mailing','Newsletter']);
+			}
+			trackEvent(['Inscription','Validation inscription']);
+		}
+	</script>
+</template:addResources>
