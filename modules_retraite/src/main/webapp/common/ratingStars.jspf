@@ -1,9 +1,0 @@
-<%--avant d'inclure ce morceau du code il faut ajouter le css (css/ciProfil/..) convenable--%>
-<c:set var="numberOfFullStars" value="${cia:getNumberOfRankStars(uuid)}"/>
-
-<c:forEach begin="1" end="${numberOfFullStars}">
-    <div class="star fullStar"></div>
-</c:forEach>
-<c:forEach begin="1" end="${4-numberOfFullStars}">
-    <div class="star emptyStar"></div>
-</c:forEach>

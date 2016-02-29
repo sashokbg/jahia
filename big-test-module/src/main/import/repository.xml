@@ -2,42 +2,36 @@
 <content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
 	<modules jcr:primaryType="jnt:modules">
 		<big-test-module j:dependencies="default"
-			j:modulePriority="0" j:moduleType="module" j:title="Big Test Module"
-			jcr:mixinTypes="jmix:hasExternalProviderExtension" jcr:primaryType="jnt:module">
-			<sources jcr:mixinTypes="jmix:hasExternalProviderExtension"
-				jcr:primaryType="jnt:moduleVersionFolder"
-				j:staticMountPointProviderKey="module-big-test-module-1.0-SNAPSHOT">
-				<src jcr:primaryType="jnt:folder">
-					<main jcr:primaryType="jnt:folder">
-						<resources jcr:primaryType="jnt:folder">
-							<META-INF jcr:primaryType="jnt:metaInfFolder">
-								<definitions.cnd jcr:primaryType="jnt:definitionFile" />
-							</META-INF>
-						</resources>
-					</main>
-				</src>
-			</sources>
+                       j:modulePriority="0"
+                       j:moduleType="module"
+                       j:title="Big Test Module"
+                       jcr:mixinTypes="jmix:hasExternalProviderExtension"
+                       jcr:primaryType="jnt:module">
 
-			<portlets jcr:primaryType="jnt:portletFolder" />
-			<files jcr:primaryType="jnt:folder" />
-			<contents jcr:primaryType="jnt:contentFolder" />
+                <portlets jcr:primaryType="jnt:portletFolder"/>
+                <files jcr:primaryType="jnt:folder"/>
+                <contents jcr:primaryType="jnt:contentFolder"/>
 			<templates j:rootTemplatePath="/" jcr:primaryType="jnt:templatesFolder">
-				<contents jcr:primaryType="jnt:contentFolder" />
-
+                    <files jcr:primaryType="jnt:folder"/>
+                    <contents jcr:primaryType="jnt:contentFolder"/>
 				<site-settings-base j:view="siteSettings"
-					jcr:mixinTypes="jmix:useUILocale" jcr:primaryType="jnt:template">
-					<chat j:applyOn="jnt:virtualsite" j:defaultTemplate="false"
+                                jcr:mixinTypes="jmix:useUILocale"
+                                jcr:primaryType="jnt:template">
+                        <chat j:applyOn="jnt:virtualsite"
+                     j:defaultTemplate="false"
 						j:hiddenTemplate="true"
-						j:icon="/modules/big-test-module/icons/jnt_siteSettingsTest.png"
-						j:priority="100" j:requiredPermissionNames="siteAdminLanguages"
-						j:titleKey="siteSettings.label.test" jcr:mixinTypes="jmix:rbTitle"
+                     j:priority="100"
+                     j:requiredPermissionNames="siteAdminLanguages"
+                     j:titleKey="siteSettings.label.test"
+                     jcr:mixinTypes="jmix:rbTitle"
 						jcr:primaryType="jnt:contentTemplate">
 						<pagecontent jcr:primaryType="jnt:contentList">
-							<chat jcr:primaryType="jnt:siteSettingsTest" />
+                                <chat jcr:primaryType="jnt:siteSettingsTest"/>
 						</pagecontent>
 					</chat>
 				</site-settings-base>
 			</templates>
+                
 		</big-test-module>
 	</modules>
 </content>
