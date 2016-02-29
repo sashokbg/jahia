@@ -26,15 +26,17 @@
                         </settings.png>
                 </files>
                 <contents jcr:primaryType="jnt:contentFolder"/>
-                    <base j:view="big-test-templates" jcr:primaryType="jnt:template">
-                        <home j:themeName="default"
-                     j:view="big-test-templates"
-                     jcr:mixinTypes="jmix:theme"
-                     jcr:primaryType="jnt:pageTemplate"/>
+                    <base j:view="2columns" jcr:primaryType="jnt:template">
+                        <home j:view="2columns" jcr:primaryType="jnt:pageTemplate">
+                            <pagecontent jcr:primaryType="jnt:contentList"/>
+                        </home>
                         <simple j:view="big-test-templates" jcr:primaryType="jnt:pageTemplate">
                         <pagecontent jcr:primaryType="jnt:contentList"/>
                         </simple>
                         <pagecontent jcr:primaryType="jnt:contentList"/>
+                        <j:translation_en jcr:language="en"
+                                 jcr:primaryType="jnt:translation"
+                                 jcr:title="2cols"/>
                 </base>
                     <content-template j:applyOn="jnt:content"
                               j:hiddenTemplate="true"
