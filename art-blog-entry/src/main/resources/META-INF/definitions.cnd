@@ -1,0 +1,11 @@
+<art = 'http://blogicus-articus.com/art/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+
+[art:artSiteComponents] > jmix:droppableContent mixin
+
+[art:blogPost] > jnt:content, art:artSiteComponents
+ - title (string) mandatory internationalized
+ - postText (string, richtext) internationalized
+ - postPic (weakreference, picker [type = 'image'])
+
