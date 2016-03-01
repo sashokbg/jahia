@@ -13,7 +13,7 @@
     <groupId>org.jahia.modules</groupId>
     <artifactId>big-test-module</artifactId>
     <name>Big Test Module</name>
-    <version>1.0.2-SNAPSHOT</version>    
+    <version>1.0.3-SNAPSHOT</version>    
     <packaging>bundle</packaging>
     <description>This is the custom module (Big Test Module) for running on a Digital Experience Manager server.</description>
 
