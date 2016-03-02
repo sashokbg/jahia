@@ -12,5 +12,8 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:area path="header"/>
+<template:addResources resources="jquery-2.2.1.js" type="javascript"/>
+<template:addResources resources="bootstrap.min.js" type="javascript"/>
+<template:addResources resources="bootstrap.css" type="css"/>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
