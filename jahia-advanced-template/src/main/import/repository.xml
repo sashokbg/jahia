@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <modules jcr:primaryType="jnt:modules">
+        <jahia-advanced-template j:dependencies="default"
+                               j:modulePriority="0"
+                               j:moduleType="module"
+                               j:title="Jahia Advanced Template"
+                               jcr:primaryType="jnt:module">
+                
+                <portlets jcr:primaryType="jnt:portletFolder"/>
+                <files jcr:primaryType="jnt:folder"/>
+                <contents jcr:primaryType="jnt:contentFolder"/>
+                <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
+                    <files jcr:primaryType="jnt:folder">
+                        <template.png j:height="16"
+                             j:width="16"
+                             jcr:mixinTypes="jmix:image"
+                             jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </template.png>
+                        <settings.png j:height="16"
+                             j:width="16"
+                             jcr:mixinTypes="jmix:image"
+                             jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </settings.png>
+                        <page-text.png j:height="16"
+                              j:width="13"
+                              jcr:mixinTypes="jmix:image"
+                              jcr:primaryType="jnt:file">
+                            <jcr:content jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                            <thumbnail2 jcr:mimeType="image/png" jcr:primaryType="jnt:resource"/>
+                        </page-text.png>
+                    </files>
+                    <contents jcr:primaryType="jnt:contentFolder"/>
+                    <base j:hiddenTemplate="false"
+                  j:icon="/modules/jahia-advanced-template/templates/files/template.png"
+                  j:view="2columns"
+                  jcr:primaryType="jnt:template">
+                        <j:translation_fr jcr:language="fr"
+                                 jcr:mixinTypes="mix:title"
+                                 jcr:primaryType="jnt:translation"
+                                 jcr:title="base"/>
+                        <home j:hiddenTemplate="false" jcr:primaryType="jnt:pageTemplate">
+                            <j:translation_fr jcr:language="fr"
+                                    jcr:mixinTypes="mix:title"
+                                    jcr:primaryType="jnt:translation"
+                                    jcr:title="home"/>
+                        </home>
+                        <header jcr:primaryType="bg:templateZone">
+                            <block-1 jcr:primaryType="bg:templateBlock" size="9">
+                                <j:translation_fr jcr:language="fr"
+                                       jcr:mixinTypes="mix:title"
+                                       jcr:primaryType="jnt:translation"
+                                       jcr:title="Block 1"/>
+                                <block-1 jcr:primaryType="jnt:contentList">
+                                    <subblock jcr:primaryType="bg:templateBlock" size="3">
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:mixinTypes="mix:title"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="SubBlock"/>
+                                        <subblock jcr:primaryType="jnt:contentList"/>
+                                    </subblock>
+                                    <subblock-2 jcr:primaryType="bg:templateBlock" size="9">
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:mixinTypes="mix:title"
+                                             jcr:primaryType="jnt:translation"
+                                             jcr:title="SubBlock-2"/>
+                                        <subblock-2 jcr:primaryType="jnt:contentList"/>
+                                    </subblock-2>
+                            </block-1>
+                            </block-1>
+                        </header>
+                        <left-column jcr:primaryType="jnt:contentList"/>
+                    </base>
+                    <site-settings-base j:icon="/modules/jahia-advanced-template/templates/files/settings.png"
+                                j:view="siteSettings"
+                                jcr:mixinTypes="jmix:useUILocale"
+                                jcr:primaryType="jnt:template">
+                        <pagecontent jcr:primaryType="jnt:contentList"/>
+                    </site-settings-base>
+                    <content-template j:applyOn="jnt:content"
+                              j:defaultTemplate="false"
+                              j:hiddenTemplate="false"
+                              j:icon="/modules/jahia-advanced-template/templates/files/page-text.png"
+                              jcr:primaryType="jnt:contentTemplate"/>
+                </templates>
+                
+            </jahia-advanced-template>
+    </modules>
+</content>

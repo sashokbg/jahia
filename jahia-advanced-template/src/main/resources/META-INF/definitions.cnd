@@ -1,0 +1,19 @@
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<bg = 'http://www.jahia.org/jahia/bg/1.0'>
+<bgmix = 'http://www.jahia.org/jahia/bgmix/1.0'>
+
+[bg:templateCustomization] > jnt:content, mix:title, jmix:studioOnly, jmix:siteComponent
+
+[bgmix:templateCustomization] mixin
+ - displayFooterLinks (string, choicelist) = 'home' < 'home', 'all', 'none'
+ 
+[bgmix:templateElement] > jmix:droppableContent mixin
+
+[bg:templateBlock] > jnt:content, mix:title, bgmix:templateElement
+ - size (string, choicelist[resourceBundle]) = '3' < '1','2','3','4','5','6','7','8','9','10','11','12'
+ - cssClass (string)
+ +*(jnt:content) = jnt:content
+
+[bg:templateZone] > jnt:content, mix:title
+ +*(bg:templateBlock) = bg:templateBlock

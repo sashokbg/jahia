@@ -127,6 +127,21 @@
                             <area-left-col j:allowedTypes="" jcr:primaryType="jnt:area"/>
                             <area-left-col-bot j:allowedTypes="" jcr:primaryType="jnt:area"/>
                         </left-column>
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <area-header-static j:allowedTypes="" jcr:primaryType="jnt:area">
+                                <area-header-static jcr:primaryType="jnt:contentList">
+                                    <rich-text jcr:primaryType="jnt:bigText">
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:primaryType="jnt:translation"
+                                             text="&lt;p&gt;Textttt&lt;/p&gt;&#xA;"/>
+                                    </rich-text>
+                            </area-header-static>
+                            </area-header-static>
+                            <area-header-custom j:allowedTypes="" jcr:primaryType="jnt:area"/>
+                            <absolute-area-header j:allowedTypes=""
+                                        j:limitedAbsoluteAreaEdit="false"
+                                        jcr:primaryType="jnt:absoluteArea"/>
+                        </pagecontent>
                         <header jcr:primaryType="acme:header"/>
                     </_x0033_columns>
                     <grid j:hiddenTemplate="false"
@@ -155,67 +170,22 @@
                                     jcr:mixinTypes="mix:title"
                                     jcr:primaryType="jnt:translation"
                                     jcr:title="2columns"/>
-                        </_x0032_columns>
-                        <header jcr:primaryType="acme:header">
-                            <zone1 jcr:primaryType="acme:headerZone" size="2">
+                            <fdgfg jcr:primaryType="jnt:contentList">
                                 <j:translation_fr jcr:language="fr"
                                        jcr:primaryType="jnt:translation"
-                                       jcr:title="zone1"/>
+                                       jcr:title="subzone"/>
                                 <rich-text jcr:primaryType="jnt:bigText">
                                     <j:translation_fr jcr:language="fr"
                                           jcr:primaryType="jnt:translation"
-                                          text="&lt;p&gt;Left top header&lt;/p&gt;&#xA;"/>
+                                          text="&lt;p&gt;subbbb zone&lt;/p&gt;&#xA;"/>
                                 </rich-text>
+                            </fdgfg>
+                            <zone1 jcr:primaryType="jnt:contentList">
+                                <simple-text jcr:primaryType="jnt:text">
+                                    <j:translation_fr jcr:language="fr" jcr:primaryType="jnt:translation" text="zone 1"/>
+                                </simple-text>
                             </zone1>
-                            <header-2 jcr:primaryType="acme:headerZone" size="6">
-                                    <j:translation_fr jcr:language="fr"
-                                          jcr:primaryType="jnt:translation"
-                                       jcr:title="header-2"/>
-                                    <rich-text jcr:primaryType="jnt:bigText">
-                                        <j:translation_fr jcr:language="fr"
-                                             jcr:primaryType="jnt:translation"
-                                          text="&lt;p&gt;Mid header&lt;/p&gt;&#xA;"/>
-                                    </rich-text>
-                                <subheader jcr:primaryType="acme:headerZone" size="6">
-                                <j:translation_fr jcr:language="fr"
-                                       jcr:primaryType="jnt:translation"
-                                          jcr:title="SubHeader"/>
-                                <rich-text jcr:primaryType="jnt:bigText">
-                                    <j:translation_fr jcr:language="fr"
-                                          jcr:primaryType="jnt:translation"
-                                             text="&lt;p&gt;Sub header left&lt;/p&gt;&#xA;"/>
-                                </rich-text>
-                                </subheader>
-                                <subheader3 jcr:primaryType="acme:headerZone" size="6">
-                                    <j:translation_fr jcr:language="fr"
-                                          jcr:primaryType="jnt:translation"
-                                          jcr:title="subheader3"/>
-                                    <rich-text jcr:primaryType="jnt:bigText">
-                                        <j:translation_fr jcr:language="fr"
-                                             jcr:primaryType="jnt:translation"
-                                             text="&lt;p&gt;Sub header right&lt;/p&gt;&#xA;"/>
-                                    </rich-text>
-                                </subheader3>
-                            </header-2>
-                            <last-header-zone jcr:primaryType="acme:headerZone" size="4">
-                                <j:translation_fr jcr:language="fr"
-                                       jcr:primaryType="jnt:translation"
-                                       jcr:title="Last header zone"/>
-                                <rich-text jcr:primaryType="jnt:bigText">
-                                    <j:translation_fr jcr:language="fr"
-                                          jcr:primaryType="jnt:translation"
-                                          text="&lt;p&gt;Right top header&lt;/p&gt;&#xA;"/>
-                                </rich-text>
-                                <sub-header-2 jcr:primaryType="acme:headerZone" size="5">
-                                    <j:translation_fr jcr:language="fr"
-                                          jcr:primaryType="jnt:translation"
-                                          jcr:title="Sub Header 2"/>
-                                    <language-switcher jcr:primaryType="jnt:languageSwitcher"
-                                           typeOfDisplay="isoLocaleCountryCode"/>
-                                </sub-header-2>
-                                <display-the-current-language jcr:primaryType="jnt:displayCurrentLanguage"/>
-                            </last-header-zone>
-                        </header>
+                        </_x0032_columns>
                         <left-column jcr:primaryType="jnt:contentList">
                             <absolute-area-left-col j:allowedTypes=""
                                           j:limitedAbsoluteAreaEdit="false"
@@ -223,6 +193,26 @@
                             <area-left-col-top j:allowedTypes="" jcr:primaryType="jnt:area"/>
                             <area-left-col-bot j:allowedTypes="" jcr:primaryType="jnt:area"/>
                         </left-column>
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <area12658 j:allowedTypes="" jcr:primaryType="jnt:area">
+                                <area12658 jcr:primaryType="jnt:contentList">
+                                    <zone2 jcr:primaryType="jnt:contentList"/>
+                                    <rich-text jcr:primaryType="jnt:bigText">
+                                        <j:translation_fr jcr:language="fr"
+                                             jcr:primaryType="jnt:translation"
+                                             text="&lt;p&gt;TEST ZONE CENTRALE&lt;/p&gt;&#xA;"/>
+                                    </rich-text>
+                            </area12658>
+                            </area12658>
+                        </pagecontent>
+                        <header jcr:primaryType="acme:header">
+                            <zone1 jcr:primaryType="acme:headerZone" size="5">
+                                <j:translation_fr jcr:language="fr"
+                                       jcr:primaryType="jnt:translation"
+                                       jcr:title="Zone1"/>
+                            </zone1>
+                            <header-zone jcr:primaryType="acme:headerZone" size="7"/>
+                        </header>
                     </_x0032_columns>
             </templates>
                 
