@@ -5,3 +5,12 @@
 
 [jmix:bigTestTemplateCustomization] mixin
  - displayFooterLinks (string, choicelist) = 'home' < 'home', 'all', 'none'
+ 
+[jmix:headerElement] mixin
+
+[acme:headerZone] > jnt:content, mix:title
+ - size (string, choicelist[resourceBundle]) = '3' < '1','2','3','4','5','6','7','8','9','10','11','12'
+ +*(jnt:content) = jnt:content
+
+[acme:header] > jnt:content, mix:title
+ +*(acme:headerZone) = acme:headerZone

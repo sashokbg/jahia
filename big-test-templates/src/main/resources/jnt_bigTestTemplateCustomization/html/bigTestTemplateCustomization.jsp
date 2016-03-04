@@ -44,7 +44,7 @@
 </h2>
 <div class="box-1">
 	<form id="updateSiteForm"
-		action="<c:url value='${url.base}${renderContext.mainResource.node.resolveSite.path}'/>"
+		action="${url.base}${renderContext.mainResource.node.resolveSite.path}"
 		method="post">
 		<input type="hidden" name="jcrMethodToCall" value="put" /> <input
 			type="hidden" name="jcr:mixinTypes"

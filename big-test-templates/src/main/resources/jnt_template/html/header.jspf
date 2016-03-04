@@ -12,8 +12,12 @@
 <%--@elvariable id="currentResource" type="org.jahia.services.render.Resource"--%>
 <%--@elvariable id="url" type="org.jahia.services.render.URLGenerator"--%>
 
-<template:addResources resources="jquery-2.2.1.js" type="javascript"/>
-<template:addResources resources="bootstrap.min.js" type="javascript"/>
-<template:addResources resources="bootstrap.css" type="css"/>
+<div class="container-fluid">
+	<div class="row">
+		<template:area path="header" areaType="acme:header"/>
+	</div>
+</div>
+ 
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+ 

@@ -13,7 +13,7 @@
     <groupId>org.jahia.modules</groupId>
     <artifactId>big-test-templates</artifactId>
     <name>Big Test Templates</name>
-    <version>1.0.3-SNAPSHOT</version>    
+    <version>1.0.4-SNAPSHOT</version>    
     <packaging>bundle</packaging>
     <description>This is the custom profile module (Big Test Templates) for running on a Digital Experience Manager server.</description>
 

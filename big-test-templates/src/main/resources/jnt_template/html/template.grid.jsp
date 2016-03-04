@@ -11,7 +11,7 @@
 </head>
 
 <body>
-	<template:include view="hidden.header" />
+	<%@include file="header.jspf" %>
 
 	<div class="container-fluid">
 		<div class="col-md-3">
@@ -31,6 +31,8 @@
 	<c:if test="${renderContext.editMode}">
 		<template:addResources type="css" resources="edit.css" />
 	</c:if>
+
+	<%@include file="footer.jspf" %>
 
 	<template:theme />
 

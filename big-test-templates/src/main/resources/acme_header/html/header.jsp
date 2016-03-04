@@ -1,34 +1,19 @@
 <!DOCTYPE html>
 
 <%@include file="../../incl/common.jspf" %>
+<c:set var="totalColumns" value="0" />
 
-<html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<template:include view="hidden.head" />
+<c:if test="${jcr:hasChildrenOfType(currentNode,'acme:headerZone')}">
+	<c:forEach items="${jcr:getChildrenOfType(currentNode,'acme:headerZone')}" var="subchild" varStatus="status">
+		<template:module node="${subchild}" editable="true" />
+		<c:set var="totalColumns" value="${totalColumns + subchild.properties.size.string}" />
+	</c:forEach>
+</c:if>
+
+<c:if test="${renderContext.editMode}">
+	<c:if test="${totalColumns gt 12}">
+		<span class="edit-error"> Warning total number of columns > 12 ! (${totalColumns})</span>
+	</c:if>
 	
-	<title>${fn:escapeXml(renderContext.mainResource.node.displayableName)}</title>
-</head>
-	<body>
-		<%@include file="header.jspf" %>
-	
-		<div class="container">
-			<div class="row">
-				<div class="col-md-3">
-					<template:area path="left-column" />
-				</div>
-				<div class="col-md-9">
-					<template:area path="pagecontent" />
-				</div>
-			</div>
-		</div>
-	
-		<c:if test="${renderContext.editMode}">
-			<template:addResources type="css" resources="edit.css" />
-		</c:if>
-		
-		<%@include file="footer.jspf" %>
-		
-		<template:theme />
-	</body>
-</html>
+	<template:module nodeTypes="acme:headerZone" path="*"></template:module>
+</c:if>
