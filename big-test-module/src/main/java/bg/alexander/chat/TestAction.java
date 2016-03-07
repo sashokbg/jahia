@@ -13,12 +13,15 @@ import org.jahia.services.render.RenderContext;
 import org.jahia.services.render.Resource;
 import org.jahia.services.render.URLResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
+@Component
 public class TestAction extends Action{
 	@Autowired
 	private JCRTemplate jcrTemplate;
+	
+	@Autowired
+	private CustomUserManager userManager;
 	
 	public void setJcrTemplate(JCRTemplate jcrTemplate) {
 		this.jcrTemplate = jcrTemplate;

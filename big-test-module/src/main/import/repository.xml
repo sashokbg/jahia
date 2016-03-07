@@ -40,21 +40,27 @@
                             <pagecontent jcr:primaryType="jnt:contentList">
                                 <module-settings jcr:primaryType="acme:bigTestModuleCustomization">
                                     <j:translation_fr jcr:language="fr"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                     <j:translation_de jcr:language="de"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                     <j:translation_pt jcr:language="pt"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                     <j:translation_en jcr:language="en"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                     <j:translation_it jcr:language="it"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                     <j:translation_es jcr:language="es"
+                                          jcr:mixinTypes="mix:title"
                                           jcr:primaryType="jnt:translation"
                                           jcr:title="Module Settings"/>
                                 </module-settings>

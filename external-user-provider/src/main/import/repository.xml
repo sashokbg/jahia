@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
+    <modules jcr:primaryType="jnt:modules">
+        <external-user-provider j:dependencies="default"
+                              j:modulePriority="0"
+                              j:moduleType="module"
+                              j:title="External User Provider"
+                              jcr:primaryType="jnt:module">
+                
+                <portlets jcr:primaryType="jnt:portletFolder"/>
+                <files jcr:primaryType="jnt:folder"/>
+                <contents jcr:primaryType="jnt:contentFolder"/>
+                <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
+                    <files jcr:primaryType="jnt:folder"/>
+                    <contents jcr:primaryType="jnt:contentFolder"/>
+                    <server-settings-base j:view="serverSettings"
+                                  jcr:mixinTypes="jmix:useUILocale"
+                                  jcr:primaryType="jnt:template">
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <rich-text jcr:primaryType="jnt:bigText">
+                                <j:translation_fr jcr:language="fr"
+                                       jcr:primaryType="jnt:translation"
+                                       text="&lt;p&gt;TEST&lt;/p&gt;&#xA;"/>
+                            </rich-text>
+                        </pagecontent>
+                        <content-template j:applyOn="jnt:globalSettings"
+                                 j:defaultTemplate="false"
+                                 j:hiddenTemplate="false"
+                                 jcr:primaryType="jnt:contentTemplate"/>
+                    </server-settings-base>
+                </templates>
+                
+            </external-user-provider>
+    </modules>
+</content>
