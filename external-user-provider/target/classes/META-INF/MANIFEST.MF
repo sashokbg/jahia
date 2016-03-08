@@ -1,0 +1,47 @@
+Manifest-Version: 1.0
+Bnd-LastModified: 1457349575165
+Build-Jdk: 1.8.0_73
+Built-By: akirilov
+Bundle-Category: jahia-module
+Bundle-Description: This is the custom module (External User Provider) f
+ or running on a Digital Experience Manager server.
+Bundle-DocURL: http://www.jahia.com
+Bundle-ManifestVersion: 2
+Bundle-Name: External User Provider
+Bundle-SymbolicName: external-user-provider
+Bundle-Vendor: Jahia Solutions Group SA
+Bundle-Version: 1.0.0.SNAPSHOT
+Created-By: Apache Maven Bundle Plugin
+Dynamic-ImportPackage: *
+Implementation-Title: External User Provider
+Implementation-URL: http://www.jahia.com
+Implementation-Vendor: Jahia Solutions Group SA
+Implementation-Version: 1.0-SNAPSHOT
+Import-Package: org.jahia.services,org.jahia.defaults.config.spring,org.
+ apache.naming.java,org.jahia.exceptions
+Jahia-Depends: default
+Jahia-Download-Sources-Available: true
+Jahia-GroupId: bg.alexander.jahia
+Jahia-Module-Type: system
+Jahia-Required-Version: 7.1.1.0
+Jahia-Source-Control-Connection: scm:dummy:uri
+Jahia-Source-Control-DeveloperConnection: scm:dummy:uri
+Jahia-Source-Control-Tag: HEAD
+Jahia-Source-Folders: C:\workspace\jahia\external-user-provider
+Jahia-Static-Resources: /css,/icons,/images,/img,/javascript
+Require-Capability: com.jahia.services.content;filter:="(nodetypes=jmix:
+ useUILocale)",com.jahia.services.content;filter:="(nodetypes=jnt:bigTex
+ t)",com.jahia.services.content;filter:="(nodetypes=jnt:contentFolder)",
+ com.jahia.services.content;filter:="(nodetypes=jnt:contentList)",com.ja
+ hia.services.content;filter:="(nodetypes=jnt:contentTemplate)",com.jahi
+ a.services.content;filter:="(nodetypes=jnt:folder)",com.jahia.services.
+ content;filter:="(nodetypes=jnt:module)",com.jahia.services.content;fil
+ ter:="(nodetypes=jnt:modules)",com.jahia.services.content;filter:="(nod
+ etypes=jnt:portletFolder)",com.jahia.services.content;filter:="(nodetyp
+ es=jnt:template)",com.jahia.services.content;filter:="(nodetypes=jnt:te
+ mplatesFolder)",com.jahia.services.content;filter:="(nodetypes=jnt:tran
+ slation)"
+Specification-Title: External User Provider
+Specification-Vendor: Jahia Solutions Group SA
+Specification-Version: 1.0-SNAPSHOT
+Tool: Bnd-2.3.0.201405100607
